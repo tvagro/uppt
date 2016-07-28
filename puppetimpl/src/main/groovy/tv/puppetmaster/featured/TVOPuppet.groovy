@@ -9,7 +9,7 @@ import tv.puppetmaster.data.i.Puppet.PuppetIterator
 
 import java.util.concurrent.TimeUnit
 
-public class TVOPuppet implements InstallablePuppet {
+def class TVOPuppet implements InstallablePuppet {
 
     static final int VERSION_CODE = 3
 
@@ -50,7 +50,7 @@ public class TVOPuppet implements InstallablePuppet {
 
     @Override
     PuppetIterator getChildren() {
-        TVOIterator children = new TVOIterator()
+        TVOPuppetIterator children = new TVOPuppetIterator()
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz1".toUpperCase().toCharArray();
         for (char letter : alphabet) {
             children.add(new TVOAlphabeticalIndexPuppet(letter.toString()))
@@ -85,7 +85,7 @@ public class TVOPuppet implements InstallablePuppet {
 
     @Override
     String getBackgroundImageUrl() {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Tvo_logo_new.svg/2000px-Tvo_logo_new.svg.png"
+        return "http://post.queensu.ca/~leuprech/pics/TVO_think_red_RGB.jpg"
     }
 
     @Override
@@ -118,19 +118,40 @@ public class TVOPuppet implements InstallablePuppet {
         return getName()
     }
 
-    class TVOAlphabeticalIndexPuppet implements ParentPuppet {
+    def class TVOPuppetIterator extends PuppetIterator {
+
+        def mList = []
+        def int mCurrentIndex = 0
+
+        @Override
+        void add(Puppet puppet) {
+            mList.add(puppet)
+        }
+
+        @Override
+        boolean hasNext() {
+            return mCurrentIndex < mList.size()
+        }
+
+        @Override
+        Puppet next() {
+            return (Puppet) mList.get(mCurrentIndex++)
+        }
+    }
+
+    def class TVOAlphabeticalIndexPuppet implements ParentPuppet {
 
         def String mCharacter
 
-        public TVOAlphabeticalIndexPuppet(String character) {
+        TVOAlphabeticalIndexPuppet(String character) {
             mCharacter = character
         }
 
         @Override
         PuppetIterator getChildren() {
             Document document = Jsoup.connect("http://tvo.org/programs/" + mCharacter).get()
-            Elements anchors = document.select('ul.program-list:first-child a')
-            TVOIterator children = new TVOIterator()
+            Elements anchors = document.select('ul.program-list a')
+            TVOPuppetIterator children = new TVOPuppetIterator()
             for (Element a : anchors) {
                 children.add(new TVOFinalDirectoryPuppet(a))
             }
@@ -192,11 +213,16 @@ public class TVOPuppet implements InstallablePuppet {
             return null
         }
 
-        class TVOFinalDirectoryPuppet implements ParentPuppet {
+        @Override
+        String toString() {
+            return getName()
+        }
+
+        def class TVOFinalDirectoryPuppet implements ParentPuppet {
 
             Element mA
 
-            public TVOFinalDirectoryPuppet(Element a) {
+            TVOFinalDirectoryPuppet(Element a) {
                 mA = a
             }
 
@@ -204,7 +230,7 @@ public class TVOPuppet implements InstallablePuppet {
             PuppetIterator getChildren() {
                 Document document = Jsoup.connect(mA.absUrl("href")).get()
                 Elements divs = document.select('.views-row')
-                TVOIterator children = new TVOIterator()
+                TVOPuppetIterator children = new TVOPuppetIterator()
                 for (Element div : divs) {
                     children.add(new TVOScrapeSourcesPuppet(div))
                 }
@@ -266,11 +292,16 @@ public class TVOPuppet implements InstallablePuppet {
                 return null
             }
 
-            class TVOScrapeSourcesPuppet implements SourcesPuppet {
+            @Override
+            String toString() {
+                return getName()
+            }
+
+            def class TVOScrapeSourcesPuppet implements SourcesPuppet {
 
                 def Element mDiv
 
-                public TVOScrapeSourcesPuppet(Element div) {
+                TVOScrapeSourcesPuppet(Element div) {
                     mDiv = div
                 }
 
@@ -302,7 +333,7 @@ public class TVOPuppet implements InstallablePuppet {
 
                 @Override
                 String getName() {
-                    return mDiv.select('.views-field-title a').first().text()
+                    return mDiv.select('.video-container h1').first().text()
                 }
 
                 @Override
@@ -312,7 +343,7 @@ public class TVOPuppet implements InstallablePuppet {
 
                 @Override
                 String getShortDescription() {
-                    return mDiv.select('.views-field-field-summary').first().text()
+                    return mDiv.select('.field-name-field-description').first().text()
                 }
 
                 @Override
@@ -350,6 +381,11 @@ public class TVOPuppet implements InstallablePuppet {
                     return TVOFinalDirectoryPuppet.this.getChildren()
                 }
 
+                @Override
+                String toString() {
+                    return getName()
+                }
+
                 private static long convertDuration(String str) {  // HH:MM[:SS] to milliseconds
                     if (str.equals("")) {
                         return -1
@@ -375,12 +411,12 @@ public class TVOPuppet implements InstallablePuppet {
                     return TimeUnit.MILLISECONDS.convert(time, TimeUnit.SECONDS)
                 }
 
-                class TVOSourcesIterator implements SourcesPuppet.SourceIterator {
+                def class TVOSourcesIterator implements SourcesPuppet.SourceIterator {
 
                     String mUrl
                     boolean mUnseen = true
 
-                    public TVOSourcesIterator(String url) {
+                    TVOSourcesIterator(String url) {
                         mUrl = url
                     }
 
@@ -406,27 +442,6 @@ public class TVOPuppet implements InstallablePuppet {
                     }
                 }
             }
-        }
-    }
-
-    class TVOIterator extends PuppetIterator {
-
-        def mList = []
-        def int mCurrentIndex = 0
-
-        @Override
-        void add(Puppet puppet) {
-            mList.add(puppet)
-        }
-
-        @Override
-        boolean hasNext() {
-            return mCurrentIndex < mList.size()
-        }
-
-        @Override
-        Puppet next() {
-            return (Puppet) mList.get(mCurrentIndex++)
         }
     }
 }
