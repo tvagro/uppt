@@ -25,22 +25,22 @@ def class TVOPuppet implements InstallablePuppet {
 
     @Override
     int getFastlaneBackgroundColor() {
-        return 0
+        return 0xFF000000
     }
 
     @Override
     int getSearchAffordanceBackgroundColor() {
-        return 0
+        return 0xFF000000
     }
 
     @Override
     int getSelectedBackgroundColor() {
-        return 0
+        return 0xFF000000
     }
 
     @Override
     int getPlayerBackgroundColor() {
-        return 0
+        return 0xFF000000
     }
 
     @Override
@@ -118,9 +118,9 @@ def class TVOPuppet implements InstallablePuppet {
         return getName()
     }
 
-    def class TVOPuppetIterator extends PuppetIterator {
+    def static class TVOPuppetIterator extends PuppetIterator {
 
-        def mList = []
+        def ArrayList<Puppet> mList = new ArrayList<>()
         def int mCurrentIndex = 0
 
         @Override
