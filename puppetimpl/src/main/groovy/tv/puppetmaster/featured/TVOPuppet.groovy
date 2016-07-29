@@ -137,6 +137,11 @@ def class TVOPuppet implements InstallablePuppet {
         Puppet next() {
             return (Puppet) mList.get(mCurrentIndex++)
         }
+
+        @Override
+        void remove() {
+
+        }
     }
 
     def class TVOAlphabeticalIndexPuppet implements ParentPuppet {
@@ -333,7 +338,7 @@ def class TVOPuppet implements InstallablePuppet {
 
                 @Override
                 String getName() {
-                    return mDiv.select('.video-container h1').first().text()
+                    return mDiv.select('.views-field-title').first().text()
                 }
 
                 @Override
@@ -343,7 +348,7 @@ def class TVOPuppet implements InstallablePuppet {
 
                 @Override
                 String getShortDescription() {
-                    return mDiv.select('.field-name-field-description').first().text()
+                    return mDiv.select('.views-field-field-summary').first().text()
                 }
 
                 @Override
@@ -439,6 +444,11 @@ def class TVOPuppet implements InstallablePuppet {
                         SourcesPuppet.SourceDescription sourceDescription = new SourcesPuppet.SourceDescription()
                         sourceDescription.url = String.format(format, videoId, account, videoId)
                         return sourceDescription
+                    }
+
+                    @Override
+                    void remove() {
+
                     }
                 }
             }
