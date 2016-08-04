@@ -17,18 +17,43 @@ public class RTPuppet implements InstallablePuppet {
 
     static final int VERSION_CODE = 3
 
+    static final LIVE_SOURCES = [
+            [
+                    name:                   "Russia Today News",
+                    description:            "A 24/7 English-language news channel that is set to show you how any story can be another story altogether.",
+                    urls:                   "http://rt-eng-live.hls.adaptive.level3.net/rt/eng/index2500.m3u8|http://rt-eng-live.hls.adaptive.level3.net/rt/eng/index1600.m3u8|http://rt-eng-live.hls.adaptive.level3.net/rt/eng/index800.m3u8|http://rt-eng-live.hls.adaptive.level3.net/rt/eng/index400.m3u8|http://rt-eng-live.hls.adaptive.level3.net/rt/eng/indexaudio.m3u8",
+            ],
+            [
+                    name:                   "RT America",
+                    description:            "RT America broadcasts from its studios in Washington, DC. Watch news reports, features and talk shows with a totally different perspective from the mainstream American television.",
+                    urls:                   "http://rt-usa-live.hls.adaptive.level3.net/rt/usa/index2500.m3u8|http://rt-usa-live.hls.adaptive.level3.net/rt/usa/index1600.m3u8|http://rt-usa-live.hls.adaptive.level3.net/rt/usa/index800.m3u8|http://rt-usa-live.hls.adaptive.level3.net/rt/usa/index400.m3u8|http://rt-usa-live.hls.adaptive.level3.net/rt/usa/indexaudio.m3u8",
+            ],
+            [
+                    name:                   "RT UK",
+                    description:            "RT UK broadcasts from its London Studio, focusing on the issues that matter most to Britons.",
+                    urls:                   "http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index2500.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index1600.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index800.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index400.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/indexaudio.m3u8"
+            ],
+            [
+                    name:                   "RT Documentaries",
+                    description:            "RT is the first Russian 24/7 English-language news channel which brings the Russian view on global news.",
+                    urls:                   "http://rt-doc-live.hls.adaptive.level3.net/rt/doc/index2500.m3u8|http://rt-doc-live.hls.adaptive.level3.net/rt/doc/index1600.m3u8|http://rt-doc-live.hls.adaptive.level3.net/rt/doc/index800.m3u8|http://rt-doc-live.hls.adaptive.level3.net/rt/doc/index400.m3u8|http://rt-doc-live.hls.adaptive.level3.net/rt/doc/indexaudio.m3u8",
+            ],
+    ]
+
     @Override
     PuppetIterator getChildren() {
         PuppetIterator children = new RTPuppetIterator(this, "https://www.rt.com",  null)
 
-        RTLiveSourcesPuppet sourcesPuppet = new RTLiveSourcesPuppet()
-        sourcesPuppet.setParent(this)
-        sourcesPuppet.setName("Russia Today Live")
-        sourcesPuppet.setShortDescription("RT is the first Russian 24/7 English-language news channel which brings the Russian view on global news.")
-        sourcesPuppet.setUrl("http://rt-a.akamaihd.net/ch_01@325605/master.m3u8|http://rt-a.akamaihd.net/ch_04@325608/720p.m3u8|http://rt-a.akamaihd.net/ch_05@325609/480p.m3u8|http://rt-a.akamaihd.net/ch_06@325610/320p.m3u8|http://rt-a.akamaihd.net/ch_02@325606/240p.m3u8|http://rt-a.akamaihd.net/ch_03@325607/320p.m3u8")
-        sourcesPuppet.setImageUrl("http://www.marketoracle.co.uk/images/2013/Aug/Russia_Today.jpg")
-        sourcesPuppet.setBackgroundImageUrl("https://superrepo.org/static/images/fanart/original/plugin.video.rt.jpg")
-        children.add(sourcesPuppet)
+        LIVE_SOURCES.each { source ->
+            RTLiveSourcesPuppet sourcesPuppet = new RTLiveSourcesPuppet()
+            sourcesPuppet.setParent(this)
+            sourcesPuppet.setName(source.name)
+            sourcesPuppet.setShortDescription(source.description)
+            sourcesPuppet.setUrl(source.urls)
+            sourcesPuppet.setImageUrl(getImageUrl())
+            sourcesPuppet.setBackgroundImageUrl(getBackgroundImageUrl())
+            children.add(sourcesPuppet)
+        }
 
         children.add(new RTShowsPuppet(
                 this,
@@ -36,8 +61,8 @@ public class RTPuppet implements InstallablePuppet {
                 "Shows",
                 "RT is the first Russian 24/7 English-language news channel which brings the Russian view on global news.",
                 "/shows/",
-                "http://www.marketoracle.co.uk/images/2013/Aug/Russia_Today.jpg",
-                "https://superrepo.org/static/images/fanart/original/plugin.video.rt.jpg"
+                getImageUrl(),
+                getBackgroundImageUrl()
         ))
         return children
     }
@@ -119,13 +144,17 @@ public class RTPuppet implements InstallablePuppet {
 
     @Override
     List<Map<String, String>> getLiveChannelsMetaData() {
-        return [[
-                        name:           "Russia Today",
-                        description:    "Live stream from RT, a 24/7 English-language news channel",
-                        genres:         "NEWS",
-                        logo:           getImageUrl(),
-                        url:            "http://rt-a.akamaihd.net/ch_01@325605/master.m3u8"
-                ]]
+        def list = []
+        LIVE_SOURCES.each { source ->
+            list << [
+                    name       : source.name,
+                    description: source.description,
+                    genres     : "NEWS",
+                    logo       : getImageUrl(),
+                    url        : source.urls.split("\\|")[0]
+            ]
+        }
+        return list
     }
 
     @Override
@@ -607,7 +636,7 @@ public class RTPuppet implements InstallablePuppet {
 
         @Override
         PuppetIterator getRelated() {
-            return null
+            return mParent.getChildren()
         }
 
         @Override
