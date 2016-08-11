@@ -11,11 +11,9 @@ import tv.puppetmaster.data.i.SearchesPuppet
 import tv.puppetmaster.data.i.SourcesPuppet
 import tv.puppetmaster.data.i.SourcesPuppet.SourceDescription
 
-import java.util.regex.Matcher
-
 public class RTPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 3
+    static final int VERSION_CODE = 4
 
     static final LIVE_SOURCES = [
             [
@@ -27,16 +25,28 @@ public class RTPuppet implements InstallablePuppet {
                     name:                   "RT America",
                     description:            "RT America broadcasts from its studios in Washington, DC. Watch news reports, features and talk shows with a totally different perspective from the mainstream American television.",
                     urls:                   "http://rt-usa-live.hls.adaptive.level3.net/rt/usa/index2500.m3u8|http://rt-usa-live.hls.adaptive.level3.net/rt/usa/index1600.m3u8|http://rt-usa-live.hls.adaptive.level3.net/rt/usa/index800.m3u8|http://rt-usa-live.hls.adaptive.level3.net/rt/usa/index400.m3u8|http://rt-usa-live.hls.adaptive.level3.net/rt/usa/indexaudio.m3u8",
+                    image:                  "https://www.lp.org/files/imagepicker/45/rt%20america.jpg",
+                    background:             "https://img.rt.com/files/news/3e/e4/d0/00/rt-america-new.jpg",
             ],
             [
                     name:                   "RT UK",
                     description:            "RT UK broadcasts from its London Studio, focusing on the issues that matter most to Britons.",
-                    urls:                   "http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index2500.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index1600.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index800.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index400.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/indexaudio.m3u8"
+                    urls:                   "http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index2500.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index1600.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index800.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/index400.m3u8|http://rt-uk-live.hls.adaptive.level3.net/rt/uk/indexaudio.m3u8",
+                    image:                  "https://d24j9r7lck9cin.cloudfront.net/l/o/1/1466.1414681039.png",
+                    background:             "http://www.livenewsbox.com/wp-content/uploads/2015/01/RT.jpg",
             ],
             [
                     name:                   "RT Documentaries",
                     description:            "RT is the first Russian 24/7 English-language news channel which brings the Russian view on global news.",
                     urls:                   "http://rt-doc-live.hls.adaptive.level3.net/rt/doc/index2500.m3u8|http://rt-doc-live.hls.adaptive.level3.net/rt/doc/index1600.m3u8|http://rt-doc-live.hls.adaptive.level3.net/rt/doc/index800.m3u8|http://rt-doc-live.hls.adaptive.level3.net/rt/doc/index400.m3u8|http://rt-doc-live.hls.adaptive.level3.net/rt/doc/indexaudio.m3u8",
+                    background:             "http://www.watchallchannels.com/wp-content/uploads/2015/02/RT-Documentary.jpg"
+            ],
+            [
+                    name:                   "روسيا اليوم",
+                    description:            "البث المباشر",
+                    urls:                   "http://rt-ara-live.hls.adaptive.level3.net/rt/ara/index2500.m3u8|http://rt-ara-live.hls.adaptive.level3.net/rt/ara/index1600.m3u8|http://rt-ara-live.hls.adaptive.level3.net/rt/ara/index800.m3u8|http://rt-ara-live.hls.adaptive.level3.net/rt/ara/index400.m3u8|http://rt-ara-live.hls.adaptive.level3.net/rt/ara/indexaudio.m3u8",
+                    image:                  "https://s-media-cache-ak0.pinimg.com/236x/75/b7/24/75b724d33aee32142c9da4444232ede7.jpg",
+                    background:             "http://arabitec.com/wp-content/uploads/2016/01/54e608de611e9bf3308b45a4.JPG",
             ],
     ]
 
@@ -50,8 +60,8 @@ public class RTPuppet implements InstallablePuppet {
             sourcesPuppet.setName(source.name)
             sourcesPuppet.setShortDescription(source.description)
             sourcesPuppet.setUrl(source.urls)
-            sourcesPuppet.setImageUrl(getImageUrl())
-            sourcesPuppet.setBackgroundImageUrl(getBackgroundImageUrl())
+            sourcesPuppet.setImageUrl(source.containsKey('image') ? source.image : getImageUrl())
+            sourcesPuppet.setBackgroundImageUrl(source.containsKey('background') ? source.background : getBackgroundImageUrl())
             children.add(sourcesPuppet)
         }
 
@@ -98,17 +108,17 @@ public class RTPuppet implements InstallablePuppet {
     }
 
     @Override
-    boolean isAvailable(String region) {
-        return true
+    boolean isUnavailableIn(String region) {
+        return false
     }
 
     @Override
-    String[] preferredRegions() {
+    String getPreferredRegion() {
         return null
     }
 
     @Override
-    int immigrationStricture() {
+    int getShieldLevel() {
         return 0
     }
 
@@ -129,12 +139,12 @@ public class RTPuppet implements InstallablePuppet {
 
     @Override
     int getSearchAffordanceBackgroundColor() {
-        return 0xFF76BD1D
+        return 0xFF65BF2C
     }
 
     @Override
     int getSelectedBackgroundColor() {
-        return 0xFF76BD1D
+        return 0xFF65BF2C
     }
 
     @Override
@@ -150,7 +160,7 @@ public class RTPuppet implements InstallablePuppet {
                     name       : source.name,
                     description: source.description,
                     genres     : "NEWS",
-                    logo       : getImageUrl(),
+                    logo       : source.containsKey('image') ? source.image : getImageUrl(),
                     url        : source.urls.split("\\|")[0]
             ]
         }
@@ -218,17 +228,17 @@ public class RTPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return true
+        boolean isUnavailableIn(String region) {
+            return false
         }
 
         @Override
-        String[] preferredRegions() {
+        String getPreferredRegion() {
             return null
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -244,7 +254,7 @@ public class RTPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         @Override
@@ -432,17 +442,17 @@ public class RTPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return true
+        boolean isUnavailableIn(String region) {
+            return false
         }
 
         @Override
-        String[] preferredRegions() {
+        String getPreferredRegion() {
             return null
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -462,7 +472,7 @@ public class RTPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         def class RTSourceIterator implements SourcesPuppet.SourceIterator {
@@ -611,17 +621,17 @@ public class RTPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return true
+        boolean isUnavailableIn(String region) {
+            return false
         }
 
         @Override
-        String[] preferredRegions() {
+        String getPreferredRegion() {
             return null
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -641,7 +651,7 @@ public class RTPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         def class RTLiveSourceIterator implements SourcesPuppet.SourceIterator {

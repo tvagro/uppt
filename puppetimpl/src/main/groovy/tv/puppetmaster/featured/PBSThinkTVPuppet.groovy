@@ -13,7 +13,7 @@ import java.util.regex.Matcher
 
 public class PBSThinkTVPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 3
+    static final int VERSION_CODE = 4
 
     def ParentPuppet mParent
     def String mUrl
@@ -86,17 +86,17 @@ public class PBSThinkTVPuppet implements InstallablePuppet {
     }
 
     @Override
-    boolean isAvailable(String region) {
-        return true
+    boolean isUnavailableIn(String region) {
+        return false
     }
 
     @Override
-    String[] preferredRegions() {
+    String getPreferredRegion() {
         return null
     }
 
     @Override
-    int immigrationStricture() {
+    int getShieldLevel() {
         return 0
     }
 
@@ -142,7 +142,7 @@ public class PBSThinkTVPuppet implements InstallablePuppet {
 
     @Override
     public String toString() {
-        return getName()
+        return mParent == null ? getName() : mParent.toString() + " < " + getName()
     }
 
     @Override
@@ -264,17 +264,17 @@ public class PBSThinkTVPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return true
+        boolean isUnavailableIn(String region) {
+            return false
         }
 
         @Override
-        String[] preferredRegions() {
+        String getPreferredRegion() {
             return null
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -290,7 +290,7 @@ public class PBSThinkTVPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
     }
 
@@ -365,17 +365,28 @@ public class PBSThinkTVPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return region == 'us'
+        boolean isUnavailableIn(String region) {
+            if (region == 'us') {
+                return false
+            }
+
+            String html = new URL("http://player.pbs.org/viralplayer/" + mId).getText().replaceAll("\n", "")
+            Matcher matcher = html =~ /PBS.videoData =.+?recommended_encoding.+?'url'.+?'(.+?)'/
+
+            if (matcher.find()) {
+                JSONObject json = new JSONObject(new URL(matcher.group(1) + "?format=json").getText())
+                return json.has("http_code") && json.getInt("http_code") == 403
+            }
+            return true
         }
 
         @Override
-        String[] preferredRegions() {
-            return ['us'] as String[]
+        String getPreferredRegion() {
+            return 'us'
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -391,7 +402,7 @@ public class PBSThinkTVPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         private static long convertDuration(String str) {  // HH:MM[:SS] to milliseconds
@@ -428,7 +439,6 @@ public class PBSThinkTVPuppet implements InstallablePuppet {
                 if (mSource == null) {
 
                     mSource = new SourceDescription()
-
                     String html = new URL("http://player.pbs.org/viralplayer/" + PBSThinkTVSourcesPuppet.this.mId).getText().replaceAll("\n", "")
 
                     Matcher matcher = html =~ /PBS.videoData =.+?recommended_encoding.+?'url'.+?'(.+?)'.+?'closed_captions_url'.+?'(.+?)'/

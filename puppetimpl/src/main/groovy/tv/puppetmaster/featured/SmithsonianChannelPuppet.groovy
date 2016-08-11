@@ -11,7 +11,7 @@ import java.util.regex.Matcher
 
 public class SmithsonianChannelPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 3
+    static final int VERSION_CODE = 4
 
     def ParentPuppet mParent
     def String mUrl
@@ -100,17 +100,17 @@ public class SmithsonianChannelPuppet implements InstallablePuppet {
     }
 
     @Override
-    boolean isAvailable(String region) {
-        return true
+    boolean isUnavailableIn(String region) {
+        return false
     }
 
     @Override
-    String[] preferredRegions() {
+    String getPreferredRegion() {
         return null
     }
 
     @Override
-    int immigrationStricture() {
+    int getShieldLevel() {
         return 0
     }
 
@@ -160,7 +160,7 @@ public class SmithsonianChannelPuppet implements InstallablePuppet {
 
     @Override
     public String toString() {
-        return getName()
+        return mParent == null ? getName() : mParent.toString() + " < " + getName()
     }
 
     @Override
@@ -313,17 +313,17 @@ public class SmithsonianChannelPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return true
+        boolean isUnavailableIn(String region) {
+            return false
         }
 
         @Override
-        String[] preferredRegions() {
+        String getPreferredRegion() {
             return null
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -339,7 +339,7 @@ public class SmithsonianChannelPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         def class SmithsonianChannelSourceIterator implements SourcesPuppet.SourceIterator {

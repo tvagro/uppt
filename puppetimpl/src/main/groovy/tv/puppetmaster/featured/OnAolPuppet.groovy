@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 public class OnAolPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 3
+    static final int VERSION_CODE = 4
 
     def ParentPuppet mParent
     def String mUrl
@@ -109,17 +109,17 @@ public class OnAolPuppet implements InstallablePuppet {
     }
 
     @Override
-    boolean isAvailable(String region) {
-        return true
+    boolean isUnavailableIn(String region) {
+        return false
     }
 
     @Override
-    String[] preferredRegions() {
+    String getPreferredRegion() {
         return null
     }
 
     @Override
-    int immigrationStricture() {
+    int getShieldLevel() {
         return 0
     }
 
@@ -165,7 +165,7 @@ public class OnAolPuppet implements InstallablePuppet {
 
     @Override
     public String toString() {
-        return getName()
+        return mParent == null ? getName() : mParent.toString() + " < " + getName()
     }
 
     @Override
@@ -297,17 +297,17 @@ public class OnAolPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return true
+        boolean isUnavailableIn(String region) {
+            return false
         }
 
         @Override
-        String[] preferredRegions() {
+        String getPreferredRegion() {
             return null
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -323,7 +323,7 @@ public class OnAolPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         def class OnAolSourceIterator implements SourcesPuppet.SourceIterator {

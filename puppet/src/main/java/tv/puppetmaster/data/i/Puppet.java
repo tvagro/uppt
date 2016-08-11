@@ -1,9 +1,8 @@
 package tv.puppetmaster.data.i;
 
-import java.io.Serializable;
 import java.util.Iterator;
 
-public interface Puppet extends Serializable {
+public interface Puppet {
 
     /*
      * The name of this puppet, usually used to display the title of the content
@@ -31,25 +30,23 @@ public interface Puppet extends Serializable {
     String getBackgroundImageUrl();
 
     /*
-     * If the content is available in the given region
+     * If the content is unavailable in the given region
      * @param region Usually a 2 character lower-case country code (ISO 3166 alpha-2)
      * @return If the content represented by this puppet is available in the given region
      */
-    boolean isAvailable(String region);
+    boolean isUnavailableIn(String region);
 
     /*
-     * @return A list of regions best supporting access to the content represented by this puppet
-     * or null if all regions are supported
+     * @return A region best supporting access to the content or null if all regions are supported
      */
-    String[] preferredRegions();
+    String getPreferredRegion();
 
     /*
-     * @return An integer between 0-9 representing the immigration stricture of the primary
-     * preferred region:
-     * 0 == free immigration
-     * 9 == full separation
+     * @return An integer between 0-9 indicating the level of defense employed by the source
+     * 0 == none
+     * 9 == impenetrable
      */
-    int immigrationStricture();
+    int getShieldLevel();
 
     /*
      * The parent of this puppet or null if it is a top-level item
@@ -67,7 +64,7 @@ public interface Puppet extends Serializable {
      */
     String toString();
 
-    abstract class PuppetIterator implements Iterator<Puppet>, Serializable {
+    abstract class PuppetIterator implements Iterator<Puppet> {
         public abstract void add(Puppet puppet);
     }
 

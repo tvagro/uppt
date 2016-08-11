@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 def class TVOPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 3
+    static final int VERSION_CODE = 4
 
     @Override
     int getVersionCode() {
@@ -89,17 +89,17 @@ def class TVOPuppet implements InstallablePuppet {
     }
 
     @Override
-    boolean isAvailable(String region) {
-        return true
+    boolean isUnavailableIn(String region) {
+        return false
     }
 
     @Override
-    String[] preferredRegions() {
-        return new String[0]
+    String getPreferredRegion() {
+        return null
     }
 
     @Override
-    int immigrationStricture() {
+    int getShieldLevel() {
         return 0
     }
 
@@ -194,17 +194,17 @@ def class TVOPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return true
+        boolean isUnavailableIn(String region) {
+            return false
         }
 
         @Override
-        String[] preferredRegions() {
-            return new String[0]
+        String getPreferredRegion() {
+            return null
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -220,7 +220,7 @@ def class TVOPuppet implements InstallablePuppet {
 
         @Override
         String toString() {
-            return getName()
+            return TVOPuppet.this.toString() + " < " + getName()
         }
 
         def class TVOFinalDirectoryPuppet implements ParentPuppet {
@@ -273,17 +273,17 @@ def class TVOPuppet implements InstallablePuppet {
             }
 
             @Override
-            boolean isAvailable(String region) {
-                return true
+            boolean isUnavailableIn(String region) {
+                return false
             }
 
             @Override
-            String[] preferredRegions() {
-                return new String[0]
+            String getPreferredRegion() {
+                return null
             }
 
             @Override
-            int immigrationStricture() {
+            int getShieldLevel() {
                 return 0
             }
 
@@ -299,7 +299,7 @@ def class TVOPuppet implements InstallablePuppet {
 
             @Override
             String toString() {
-                return getName()
+                return TVOAlphabeticalIndexPuppet.this.toString() + " < " + getName()
             }
 
             def class TVOScrapeSourcesPuppet implements SourcesPuppet {
@@ -362,17 +362,17 @@ def class TVOPuppet implements InstallablePuppet {
                 }
 
                 @Override
-                boolean isAvailable(String region) {
-                    return true
+                boolean isUnavailableIn(String region) {
+                    return false
                 }
 
                 @Override
-                String[] preferredRegions() {
-                    return new String[0]
+                String getPreferredRegion() {
+                    return null
                 }
 
                 @Override
-                int immigrationStricture() {
+                int getShieldLevel() {
                     return 0
                 }
 
@@ -388,7 +388,7 @@ def class TVOPuppet implements InstallablePuppet {
 
                 @Override
                 String toString() {
-                    return getName()
+                    return TVOFinalDirectoryPuppet.this.toString() + " < " + getName()
                 }
 
                 private static long convertDuration(String str) {  // HH:MM[:SS] to milliseconds

@@ -9,7 +9,7 @@ public interface InstallablePuppet extends ParentPuppet {
      * The version code implies which API features are supported:
      * Live channels          >= 2
      * Branding               >= 2
-     * Region handling        >= 3
+     * Region handling        >= 4
      */
     int getVersionCode();
 

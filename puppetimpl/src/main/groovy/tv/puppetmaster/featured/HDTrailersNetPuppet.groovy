@@ -14,7 +14,7 @@ import tv.puppetmaster.data.i.SourcesPuppet.SourceDescription
 
 public class HDTrailersNetPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 3
+    static final int VERSION_CODE = 4
 
     def ParentPuppet mParent
     def String mBaseUrl
@@ -128,17 +128,17 @@ public class HDTrailersNetPuppet implements InstallablePuppet {
     }
 
     @Override
-    boolean isAvailable(String region) {
-        return true
+    boolean isUnavailableIn(String region) {
+        return false
     }
 
     @Override
-    String[] preferredRegions() {
+    String getPreferredRegion() {
         return null
     }
 
     @Override
-    int immigrationStricture() {
+    int getShieldLevel() {
         return 0
     }
 
@@ -189,7 +189,7 @@ public class HDTrailersNetPuppet implements InstallablePuppet {
 
     @Override
     String toString() {
-        return mName
+        return mParent == null ? getName() : mParent.toString() + " < " + getName()
     }
 
     def class HDTrailersNetIterator extends PuppetIterator {
@@ -314,17 +314,17 @@ public class HDTrailersNetPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return true
+        boolean isUnavailableIn(String region) {
+            return false
         }
 
         @Override
-        String[] preferredRegions() {
+        String getPreferredRegion() {
             return null
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -340,7 +340,7 @@ public class HDTrailersNetPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         @Override
@@ -500,17 +500,17 @@ public class HDTrailersNetPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return true
+        boolean isUnavailableIn(String region) {
+            return false
         }
 
         @Override
-        String[] preferredRegions() {
+        String getPreferredRegion() {
             return null
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -530,7 +530,7 @@ public class HDTrailersNetPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         def class HDTrailersNetSourceIterator implements SourcesPuppet.SourceIterator {

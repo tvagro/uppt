@@ -6,7 +6,7 @@ import tv.puppetmaster.data.i.SourcesPuppet.SourceDescription
 
 public class AlJazeeraPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 3
+    static final int VERSION_CODE = 4
 
     static final SOURCES = [
             [
@@ -100,17 +100,17 @@ public class AlJazeeraPuppet implements InstallablePuppet {
     }
 
     @Override
-    boolean isAvailable(String region) {
-        return true
+    boolean isUnavailableIn(String region) {
+        return false
     }
 
     @Override
-    String[] preferredRegions() {
+    String getPreferredRegion() {
         return null
     }
 
     @Override
-    int immigrationStricture() {
+    int getShieldLevel() {
         return 0
     }
 
@@ -213,7 +213,7 @@ public class AlJazeeraPuppet implements InstallablePuppet {
         def mUrls = []
         def String mImageUrl
         def String mBackgroundImageUrl
-        def mInaccessibleRegions = []
+        def mUnavailableRegions = []
 
         def List<SourcesPuppet.SubtitleDescription> mSubtitles = new ArrayList<SourcesPuppet.SubtitleDescription>()
 
@@ -287,22 +287,22 @@ public class AlJazeeraPuppet implements InstallablePuppet {
             return mBackgroundImageUrl
         }
 
-        void setInaccessibleRegions(String[] inaccessibleRegions) {
-            mInaccessibleRegions = inaccessibleRegions
+        void setInaccessibleRegions(String[] unavailableRegions) {
+            mUnavailableRegions = unavailableRegions
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return !mInaccessibleRegions || !(region in mInaccessibleRegions)
+        boolean isUnavailableIn(String region) {
+            return region in mUnavailableRegions
         }
 
         @Override
-        String[] preferredRegions() {
-            return ['ca'] as String[]
+        String getPreferredRegion() {
+            return 'ca'
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -322,7 +322,7 @@ public class AlJazeeraPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         def class AlJazeeraSourceIterator implements SourcesPuppet.SourceIterator {

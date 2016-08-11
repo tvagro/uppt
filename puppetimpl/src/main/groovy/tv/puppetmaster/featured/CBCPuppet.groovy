@@ -23,7 +23,7 @@ import tv.puppetmaster.data.i.SourcesPuppet.SubtitleDescription;
 
 public class CBCPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 3;
+    static final int VERSION_CODE = 4;
 
     transient def Document mDocument;
 
@@ -148,17 +148,17 @@ public class CBCPuppet implements InstallablePuppet {
     }
 
     @Override
-    boolean isAvailable(String region) {
-        return true;
+    boolean isUnavailableIn(String region) {
+        return false;
     }
 
     @Override
-    String[] preferredRegions() {
+    String getPreferredRegion() {
         return null;
     }
 
     @Override
-    int immigrationStricture() {
+    int getShieldLevel() {
         return 0;
     }
 
@@ -210,7 +210,7 @@ public class CBCPuppet implements InstallablePuppet {
 
     @Override
     public String toString() {
-        return getName();
+        return mParent == null ? getName() : mParent.toString() + " < " + getName()
     }
 
     @Override
@@ -515,17 +515,32 @@ public class CBCPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
+        boolean isUnavailableIn(String region) {
+            if (region == 'ca') {
+                return false;
+            }
+            try {
+                JSONObject entries = fetchJSON(mUrl).getJSONArray("entries").getJSONObject(0)
+                JSONArray countries = entries.getJSONArray("countries");
+                for (int i = 0; i < countries.length(); i++) {
+                    if (region == countries.getString(i)) {
+                        return entries.getBoolean("excludeCountries");
+                    }
+                }
+                return !entries.getBoolean("excludeCountries");
+            } catch (Exception ignore) {
+
+            }
             return true;
         }
 
         @Override
-        String[] preferredRegions() {
-            return null;
+        String getPreferredRegion() {
+            return 'ca';
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0;
         }
 
@@ -545,7 +560,7 @@ public class CBCPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName();
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         def class JsonContainedSMILSourceIterator implements SourceIterator {

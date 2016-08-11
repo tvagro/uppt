@@ -12,7 +12,7 @@ import java.util.regex.Matcher
 
 public class SyFyPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 3
+    static final int VERSION_CODE = 4
 
     def ParentPuppet mParent
     def String mUrl
@@ -105,17 +105,17 @@ public class SyFyPuppet implements InstallablePuppet {
     }
 
     @Override
-    boolean isAvailable(String region) {
-        return true
+    boolean isUnavailableIn(String region) {
+        return false
     }
 
     @Override
-    String[] preferredRegions() {
+    String getPreferredRegion() {
         return null
     }
 
     @Override
-    int immigrationStricture() {
+    int getShieldLevel() {
         return 0
     }
 
@@ -161,7 +161,7 @@ public class SyFyPuppet implements InstallablePuppet {
 
     @Override
     public String toString() {
-        return getName()
+        return mParent == null ? getName() : mParent.toString() + " < " + getName()
     }
 
     @Override
@@ -264,17 +264,17 @@ public class SyFyPuppet implements InstallablePuppet {
         }
 
         @Override
-        boolean isAvailable(String region) {
-            return region == 'us'
+        boolean isUnavailableIn(String region) {
+            return region != 'us'
         }
 
         @Override
-        String[] preferredRegions() {
-            return ['us'] as String[]
+        String getPreferredRegion() {
+            return 'us'
         }
 
         @Override
-        int immigrationStricture() {
+        int getShieldLevel() {
             return 0
         }
 
@@ -290,7 +290,7 @@ public class SyFyPuppet implements InstallablePuppet {
 
         @Override
         public String toString() {
-            return getName()
+            return mParent == null ? getName() : mParent.toString() + " < " + getName()
         }
 
         def class SyFySourceIterator implements SourcesPuppet.SourceIterator {
