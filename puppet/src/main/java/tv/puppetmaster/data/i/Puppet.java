@@ -1,8 +1,9 @@
 package tv.puppetmaster.data.i;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
-public interface Puppet {
+public interface Puppet extends Serializable {
 
     /*
      * The name of this puppet, usually used to display the title of the content
@@ -64,7 +65,7 @@ public interface Puppet {
      */
     String toString();
 
-    abstract class PuppetIterator implements Iterator<Puppet> {
+    abstract class PuppetIterator implements Iterator<Puppet>, Serializable {
         public abstract void add(Puppet puppet);
     }
 

@@ -1,5 +1,6 @@
 package tv.puppetmaster.data.i;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -33,10 +34,10 @@ public interface SourcesPuppet extends Puppet {
     /*
      * We want to lazy-load sources in case the implementation requires network access to parse each
      */
-    interface SourceIterator extends Iterator<SourceDescription> {
+    interface SourceIterator extends Iterator<SourceDescription>, Serializable {
     }
 
-    class SourceDescription {
+    class SourceDescription implements Serializable {
         public String url;
         public long duration;
         public String height;
@@ -46,7 +47,7 @@ public interface SourcesPuppet extends Puppet {
         public long bitrate;
     }
 
-    class SubtitleDescription {
+    class SubtitleDescription implements Serializable {
         public String locale = Locale.ENGLISH.getLanguage();
         public String mime = "text/srt";
         public String url;
