@@ -1,4 +1,4 @@
-package tv.puppetmaster.featured
+package tv.puppetmaster.extra
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

@@ -70,7 +70,7 @@ public class CBCPuppet implements InstallablePuppet {
                 "http://rlv.zcache.ca/cbc_radio_canada_gem_round_sticker-r51dda5f884654d579ee93b01c8f580a5_v9wth_8byvr_324.jpg",
                 "/bc/community/blog/photo/Laptop%20Decal_V2.jpg",
                 null,
-                ["nav ul li:nth-last-child(-n+4):not(:nth-child(1)) a", ".longlist-list li a"] as String[],
+                ["nav ul li:nth-child(4) a,nav ul li:nth-child(5) a", ".longlist-list li a"] as String[],
                 "http://tpfeed.cbc.ca/f/ExhSPC/vms_5akSXx4Ng_Zn?q=*&byGuid=#1",
                 "(\\d+)",
                 ".livenow-item,.allfeatured-item:not(:contains(\\(Live at):contains(ET\\))),.featured-container:has(.featured-title),.medialist-item:has(.medialist-title)",
@@ -129,7 +129,7 @@ public class CBCPuppet implements InstallablePuppet {
 
     @Override
     public String getCategory() {
-        return mParent == null ? "Canada" : mCategory;
+        return mParent == null ? "Public Service" : mCategory;
     }
 
     @Override

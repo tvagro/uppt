@@ -67,7 +67,7 @@ public class PBSThinkTVPuppet implements InstallablePuppet {
 
     @Override
     String getCategory() {
-        return "USA"
+        return "Public Service"
     }
 
     @Override

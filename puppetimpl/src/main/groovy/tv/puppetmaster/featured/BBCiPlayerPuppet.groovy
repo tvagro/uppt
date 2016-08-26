@@ -77,6 +77,22 @@ class BBCiPlayerPuppet implements InstallablePuppet {
                     liveStreamUrl:      "http://a.files.bbci.co.uk/media/live/manifesto/audio_video/simulcast/hls/uk/abr_hdtv/ak/bbc_news24.m3u8",
             ],
             [
+                    name:               "أخبار بي بي سي",
+                    genres:             "NEWS",
+                    description:        "البث المباشر لتلفزيون بي بي سي عربي.",
+                    imageUrl:           "http://static.radio.net/images/broadcasts/0a/d4/27575/c300.png",
+                    backgroundImageUrl: "http://vignette2.wikia.nocookie.net/logopedia/images/0/00/BBC_News_Generic.png",
+                    liveStreamUrl:      "http://bbcwshdlive01-lh.akamaihd.net/i/atv_1@61433/master.m3u8",
+            ],
+            [
+                    name:               "تلویزیون فارسی بی‌بی‌سی",
+                    genres:             "NEWS",
+                    description:        "برنامه های تلویزیون فارسی، هر روز به طور مستقیم و زنده از وبسایت فارسی بی‌بی‌سی نیزپخش می شود.",
+                    imageUrl:           "https://lh3.googleusercontent.com/F_h0WRcNxAPGUyE_hPdKck4V9qfj6U1D4iCvsF011j9VgCWAy1_X8nCPY6qazPwFNDa9=w300",
+                    backgroundImageUrl: "http://vignette2.wikia.nocookie.net/logopedia/images/0/00/BBC_News_Generic.png",
+                    liveStreamUrl:      "http://bbcwshdlive01-lh.akamaihd.net/i/ptv_1@78015/master.m3u8",
+            ],
+            [
                     name:               "BBC Parliament",
                     genres:             "NEWS",
                     description:        "Dedicated politics channel, covering both the UK Parliament, Scottish Parliament, Welsh Assembly, Northern Ireland Assembly, and international politics.",
@@ -159,6 +175,9 @@ class BBCiPlayerPuppet implements InstallablePuppet {
                     backgroundImageUrl: "https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/BBC_Two_Wales_logo.svg/1280px-BBC_Two_Wales_logo.svg.png",
                     liveStreamUrl:      "http://a.files.bbci.co.uk/media/live/manifesto/audio_video/simulcast/hls/uk/hls_tablet/ak/bbc_two_wales_digital.m3u8",
             ],
+    ]
+
+    static final RADIO = [
             [
                     name:               "BBC Radio 1",
                     genres:             "MUSIC",
@@ -309,16 +328,27 @@ class BBCiPlayerPuppet implements InstallablePuppet {
     @Override
     List<Map<String, String>> getLiveChannelsMetaData() {
         def list = []
-        CHANNELS.each { source ->
-            if (source.liveStreamUrl) {
-                list << [
-                        name       : source.name,
-                        description: source.description,
-                        genres     : source.genres,
-                        logo       : source.imageUrl,
-                        url        : source.liveStreamUrl
-                ]
+        [CHANNELS, RADIO].each {
+            it.each { source ->
+                if (source.liveStreamUrl) {
+                    list << [
+                            name       : source.name,
+                            description: source.description,
+                            genres     : source.genres,
+                            logo       : source.imageUrl,
+                            url        : source.liveStreamUrl
+                    ]
+                }
             }
+        }
+        (1..24).each {
+            def final String imageUrl = "https://pbs.twimg.com/profile_images/581471317272211456/bmZn02Sz.png"
+            list << [
+                    name       : "BBC Red Button " + it,
+                    genres     : "SPORTS",
+                    logo       : imageUrl,
+                    url        : sprintf("http://a.files.bbci.co.uk/media/live/manifesto/audio_video/webcast/hls/uk/abr_hdtv/llnw/sport_stream_%02d.m3u8", it)
+            ]
         }
         return list
     }
@@ -336,6 +366,16 @@ class BBCiPlayerPuppet implements InstallablePuppet {
             def featuredChildren = new BBCiPlayerPuppet(this, true, "Featured", "On the front page", null, null, "http://www.bbc.co.uk/iplayer").getChildren()
             featuredChildren.each { c -> mChildren.add(c) }
 
+            ParentPuppet showsPuppet = new BBCiPlayerPuppet(this, true, "Shows", "Recorded programming", null, null, null)
+            PuppetIterator showsChildren = new BBCiPlayerPuppetIterator()
+            CHANNELS.each { channel ->
+                if (channel.url) {
+                    showsChildren.add(new BBCiPlayerPuppet(showsPuppet, false, channel.name, channel.description, channel.imageUrl, channel.backgroundImageUrl, channel.url))
+                }
+            }
+            showsPuppet.setChildren(showsChildren)
+            mChildren.add(showsPuppet)
+
             ParentPuppet livePuppet = new BBCiPlayerPuppet(this, true, "Live", "BBC channels live", null, null, null)
             PuppetIterator liveChildren = new BBCiPlayerPuppetIterator()
             CHANNELS.each { channel ->
@@ -346,15 +386,26 @@ class BBCiPlayerPuppet implements InstallablePuppet {
             livePuppet.setChildren(liveChildren)
             mChildren.add(livePuppet)
 
-            ParentPuppet showsPuppet = new BBCiPlayerPuppet(this, true, "Shows", "Recorded programming", null, null, null)
-            PuppetIterator showsChildren = new BBCiPlayerPuppetIterator()
-            CHANNELS.each { channel ->
-                if (channel.url) {
-                    showsChildren.add(new BBCiPlayerPuppet(showsPuppet, false, channel.name, channel.description, channel.imageUrl, channel.backgroundImageUrl, channel.url))
+            ParentPuppet redButtonPuppet = new BBCiPlayerPuppet(this, true, "\tRed Button", "Interactive television services", null, null, null)
+            PuppetIterator redButtonChildren = new BBCiPlayerPuppetIterator()
+            (1..24).each {
+                def final String imageUrl = "https://pbs.twimg.com/profile_images/581471317272211456/bmZn02Sz.png"
+                def final String backgroundImageUrl = "http://studiomh.co.uk/wp-content/uploads/2015/06/bbc_red_button21.jpg"
+                redButtonChildren.add(new BBCiPlayerSourcesPuppet(redButtonPuppet, "Red Button " + it, "Red Button", null, imageUrl, backgroundImageUrl, true, sprintf("http://a.files.bbci.co.uk/media/live/manifesto/audio_video/webcast/hls/uk/abr_hdtv/llnw/sport_stream_%02d.m3u8", it)))
+                redButtonChildren.add(new BBCiPlayerSourcesPuppet(redButtonPuppet, "Red Button " + it + "b", "Red Button", null, imageUrl, backgroundImageUrl, true, sprintf("http://a.files.bbci.co.uk/media/live/manifesto/audio_video/webcast/hls/uk/abr_hdtv/llnw/sport_stream_%02db.m3u8", it)))
+            }
+            redButtonPuppet.setChildren(redButtonChildren)
+            mChildren.add(redButtonPuppet)
+
+            ParentPuppet radioPuppet = new BBCiPlayerPuppet(this, true, "\tRadio", "BBC radio stations", null, null, null)
+            PuppetIterator radioChildren = new BBCiPlayerPuppetIterator()
+            RADIO.each { radio ->
+                if (radio.liveStreamUrl) {
+                    radioChildren.add(new BBCiPlayerSourcesPuppet(radioPuppet, radio.name, "Radio", radio.description, radio.imageUrl, radio.backgroundImageUrl, true, radio.liveStreamUrl))
                 }
             }
-            showsPuppet.setChildren(showsChildren)
-            mChildren.add(showsPuppet)
+            radioPuppet.setChildren(radioChildren)
+            mChildren.add(radioPuppet)
         }
         if (mUrl != null) {
             Document document = Jsoup.connect(mUrl).get()
@@ -403,7 +454,7 @@ class BBCiPlayerPuppet implements InstallablePuppet {
 
     @Override
     String getCategory() {
-        return "UK"
+        return "Public Service"
     }
 
     @Override
@@ -619,7 +670,9 @@ class BBCiPlayerPuppet implements InstallablePuppet {
 
         @Override
         boolean isUnavailableIn(String region) {
-            if (mDirectUrl != null && mDirectUrl.contains("audio") && mDirectUrl.contains("sbr_low")) {
+            if (mDirectUrl != null &&
+                    (mDirectUrl.contains("audio") && mDirectUrl.contains("sbr_low")) ||
+                    mDirectUrl in ["http://bbcwshdlive01-lh.akamaihd.net/i/atv_1@61433/master.m3u8", "http://bbcwshdlive01-lh.akamaihd.net/i/ptv_1@78015/master.m3u8"]) {
                 return false
             }
             return region != "uk"

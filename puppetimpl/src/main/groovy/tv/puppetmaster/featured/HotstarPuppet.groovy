@@ -189,7 +189,7 @@ class HotstarPuppet implements InstallablePuppet {
 
     @Override
     String getCategory() {
-        return "India"
+        return "Hindi"
     }
 
     @Override
@@ -329,16 +329,27 @@ class HotstarPuppet implements InstallablePuppet {
 
         @Override
         String getImageUrl() {
+            int loc = 0
             String code = "vl"
             try {
                 try {
                     if (mItem.getString("contentType") == "SPORT") {
                         code = "hs"
+                    } else if (mItem.getString("contentType") == "FICTITIOUS") {
+                        loc = 2
+                        code = "hs"
                     }
                 } catch (ignore) {}
                 String urlPictures = mItem.getString("urlPictures")
                 if (urlPictures.length() > 2) {
-                    return sprintf('http://media0-starag.startv.in/r1/thumbs/PCTV/%1$s/%2$s/PCTV-%2$s-%3$s.jpg', urlPictures[-2..-1], urlPictures, code)
+                    try {
+                        if (mItem.getInt("seriesContentId") > 0) {
+                            loc = 2
+                            urlPictures = Integer.toString(mItem.getInt("seriesContentId"))
+                            code = "hs"
+                        }
+                    } catch (ignored) {}
+                    return sprintf('http://media%1$d-starag.startv.in/r1/thumbs/PCTV/%2$s/%3$s/PCTV-%3$s-%4$s.jpg', loc, urlPictures[-2..-1], urlPictures, code)
                 }
             } catch (ignore) {}
             return mParent.getImageUrl()
@@ -451,6 +462,14 @@ class HotstarPuppet implements InstallablePuppet {
             }
             return children
         }
+
+        @Override
+        String getImageUrl() {
+            if (toString().startsWith("Hotstar < Sports < ") || toString().startsWith("Hotstar < Sports - New < ")) {
+                return "http://techtalks.ideacellular.com/wp-content/uploads/2016/07/1.jpeg"
+            }
+            return super.getImageUrl()
+        }
     }
 
     def class HotstarSportsEventPuppet extends HotstarJSONParentPuppet {
@@ -485,6 +504,14 @@ class HotstarPuppet implements InstallablePuppet {
                 }
             }
             return children
+        }
+
+        @Override
+        String getImageUrl() {
+            if (toString().startsWith("Hotstar < Sports < ") || toString().startsWith("Hotstar < Sports - New < ")) {
+                return "http://techtalks.ideacellular.com/wp-content/uploads/2016/07/1.jpeg"
+            }
+            return super.getImageUrl()
         }
     }
 
@@ -633,7 +660,7 @@ class HotstarPuppet implements InstallablePuppet {
             long publicationDate = 0
 
             try {
-                publicationDate = mItem.getLong("broadcastDate")
+                publicationDate = mItem.getLong("broadcastDate") * 1000l
             } catch (ignore) {
             }
             return publicationDate > 0 ? new SimpleDateFormat("MMMM d, yyyy").format(publicationDate) : null
@@ -643,7 +670,7 @@ class HotstarPuppet implements InstallablePuppet {
         long getDuration() {
             long duration = 0
             try {
-                duration = mItem.getLong("duration")
+                duration = mItem.getLong("duration") * 1000l
             } catch (ignore) {
             }
             return duration > 0 ? duration : -1
@@ -692,16 +719,27 @@ class HotstarPuppet implements InstallablePuppet {
 
         @Override
         String getImageUrl() {
+            int loc = 0
             String code = "vl"
             try {
                 try {
-                    if (mItem.getString("contentType") == "SPORT") {
+                    if (mItem.getString("contentType") in ["SPORT", "SPORT_LIVE"]) {
+                        code = "hs"
+                    } else if (mItem.getString("contentType") == "FICTITIOUS") {
+                        loc = 2
                         code = "hs"
                     }
                 } catch (ignore) {}
                 String urlPictures = mItem.getString("urlPictures")
                 if (urlPictures.length() > 2) {
-                    return sprintf('http://media0-starag.startv.in/r1/thumbs/PCTV/%1$s/%2$s/PCTV-%2$s-%3$s.jpg', urlPictures[-2..-1], urlPictures, code)
+                    try {
+                        if (mItem.getInt("seriesContentId") > 0) {
+                            loc = 2
+                            urlPictures = Integer.toString(mItem.getInt("seriesContentId"))
+                            code = "hs"
+                        }
+                    } catch (ignored) {}
+                    return sprintf('http://media%1$d-starag.startv.in/r1/thumbs/PCTV/%2$s/%3$s/PCTV-%3$s-%4$s.jpg', loc, urlPictures[-2..-1], urlPictures, code)
                 }
             } catch (ignore) {}
             return mParent.getImageUrl()

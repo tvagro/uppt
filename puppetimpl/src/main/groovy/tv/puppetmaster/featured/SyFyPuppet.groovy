@@ -86,7 +86,7 @@ public class SyFyPuppet implements InstallablePuppet {
 
     @Override
     String getCategory() {
-        return mParent == null ? "USA" : mParent.getName()
+        return mParent == null ? "Sci-Fi" : mParent.getName()
     }
 
     @Override

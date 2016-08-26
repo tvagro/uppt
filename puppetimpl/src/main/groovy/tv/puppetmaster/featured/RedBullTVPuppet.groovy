@@ -109,17 +109,17 @@ public class RedBullTVPuppet implements InstallablePuppet {
 
     @Override
     int getSearchAffordanceBackgroundColor() {
-        return 0xFFCC1C4A
+        return 0xFFFACD34
     }
 
     @Override
     int getSelectedBackgroundColor() {
-        return 0xFFFACD34
+        return 0xFFCC1C4A
     }
 
     @Override
     int getPlayerBackgroundColor() {
-        return 0xFFFACD34
+        return 0xFFCC1C4A
     }
 
     @Override

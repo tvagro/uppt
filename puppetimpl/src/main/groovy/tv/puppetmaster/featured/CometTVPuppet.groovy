@@ -29,7 +29,7 @@ public class CometTVPuppet implements InstallablePuppet {
 
     @Override
     String getCategory() {
-        return "USA"
+        return "Sci-Fi"
     }
 
     @Override

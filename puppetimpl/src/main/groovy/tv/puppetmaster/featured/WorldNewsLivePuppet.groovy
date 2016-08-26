@@ -10,150 +10,194 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
     static final int VERSION_CODE = 4
 
     static final SOURCES = [
-            [
-                    name:           "ABC News",
-                    description:    "Breaking national and world news, broadcast video coverage, and exclusive interviews",
-                    urls:           [
-                            "http://abclive.abcnews.com/i/abc_live4@136330/master.m3u8"
+            "Featured": [
+                    [
+                            name       : "ABC News",
+                            description: "Breaking national and world news, broadcast video coverage, and exclusive interviews",
+                            urls       : [
+                                    "http://abclive.abcnews.com/i/abc_live4@136330/master.m3u8"
+                            ],
+                            image      : "https://yt3.ggpht.com/-vFNoLd1HnDs/AAAAAAAAAAI/AAAAAAAAAAA/Yt468AF7XKE/s900-c-k-no-rj-c0xffffff/photo.jpg",
+                            background : "http://www.webhelper.biz/wp-content/uploads/ABC-News-Using-Virtual-Reality-for-Reports-May-Use-for-2016-Prez-Race.jpg"
                     ],
-                    image:          "https://yt3.ggpht.com/-vFNoLd1HnDs/AAAAAAAAAAI/AAAAAAAAAAA/Yt468AF7XKE/s900-c-k-no-rj-c0xffffff/photo.jpg",
-                    background:     "http://www.webhelper.biz/wp-content/uploads/ABC-News-Using-Virtual-Reality-for-Reports-May-Use-for-2016-Prez-Race.jpg"
+                    [
+                            name       : "Arirang TV World (Korea)",
+                            description: "Public service agency that spreads the uniqueness of Korea to the world.",
+                            urls       : [
+                                    "http://amdlive.ctnd.com.edgesuite.net/arirang_1ch/smil:arirang_1ch.smil/playlist.m3u8",
+                                    "http://worldlive-ios.arirang.co.kr/arirang/arirangtvworldios.mp4.m3u8"
+                            ],
+                            image      : "http://www.digitaltveurope.net/wp-content/uploads/2013/01/arirang-app-logo1.png",
+                            background : "http://www.mhznetworks.org/sites/default/files/styles/695x350_series/public/arirang_series_1.png"
+                    ],
+                    [
+                            name       : "NHK World Japan Live",
+                            description: "International broadcasting service of NHK (Japan Broadcasting Corporation), Japan's public broadcaster",
+                            urls       : [
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_tv.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_tv.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_bg.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_bg.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_low.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_low.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_mid.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_mid.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_high.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_high.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/dwstv/222468/live.m3u8",
+                                    "http://web-cache.stream.ne.jp/www11/nhkworld-tv/stv/225446/live.m3u8",
+                            ],
+                            image      : "https://raw.githubusercontent.com/learningit/plugin.video.nhklive/master/icon.png",
+                            background : "http://www.livenewsbox.com/wp-content/uploads/2015/01/NHK-World.jpg"
+                    ],
             ],
-            [
-                    name:           "Arirang TV World (Korea)",
-                    description:    "Public service agency that spreads the uniqueness of Korea to the world.",
-                    urls:           [
-                            "http://amdlive.ctnd.com.edgesuite.net/arirang_1ch/smil:arirang_1ch.smil/playlist.m3u8",
-                            "http://worldlive-ios.arirang.co.kr/arirang/arirangtvworldios.mp4.m3u8"
+            "CCTV 综合": [
+                    [
+                            name       : "CCTV-NEWS",
+                            description: "CNTV 9 China, World, Biz, Video, Live events",
+                            urls       : [
+                                    "http://vdn.live.cntv.cn/api2/liveHtml5.do?channel=pa://cctv_p2p_hdcctv9"
+                            ],
+                            image      : "http://static.ishaohuang.com/2012/09/cctv-logo.jpg",
+                            background : "http://static.frontinc.com/uploads/2014/03/CCTV_02_1200x800.jpg"
                     ],
-                    image:          "http://www.digitaltveurope.net/wp-content/uploads/2013/01/arirang-app-logo1.png",
-                    background:     "http://www.mhznetworks.org/sites/default/files/styles/695x350_series/public/arirang_series_1.png"
+                    [
+                            name       : "CCTV 4 综合",
+                            description: "CNTV China, World, Biz, Video, Live events",
+                            urls       : [
+                                    "http://vdn.live.cntv.cn/api2/liveHtml5.do?channel=pa://cctv_p2p_hdcctv4"
+                            ],
+                            image      : "http://static.ishaohuang.com/2012/09/cctv-logo.jpg",
+                            background : "http://static.frontinc.com/uploads/2014/03/CCTV_02_1200x800.jpg"
+                    ],
             ],
-            [
-                    name:           "CCTV 综合",
-                    description:    "CNTV China, World, Biz, Video, Live events",
-                    urls:           [
-                            "http://vdn.live.cntv.cn/api2/liveHtml5.do?channel=pa://cctv_p2p_hdcctv1"
+            "Euronews": [
+                    [
+                            name:           "deutsch",
+                            urls:           [
+                                    "http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/14-live.m3u8"
+                            ],
+                            image:          "http://oklivetv.com/wp-content/uploads/2015/02/euronewsde.jpg",
+                            background:     "https://about.flipboard.com/wp-content/uploads/2013/10/euronews_blog.jpg"
                     ],
-                    image:          "http://static.ishaohuang.com/2012/09/cctv-logo.jpg",
-                    background:     "http://static.frontinc.com/uploads/2014/03/CCTV_02_1200x800.jpg"
-            ],
-            [
-                    name:           "CCTV-NEWS",
-                    description:    "CNTV China, World, Biz, Video, Live events",
-                    urls:           [
-                            "http://vdn.live.cntv.cn/api2/liveHtml5.do?channel=pa://cctv_p2p_hdcctv9"
+                    [
+                            name:           "english",
+                            urls:           [
+                                    "http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/ipad_en.m3u8"
+                            ],
+                            image:          "http://topsoundfm.com.ve/wp-content/uploads/2013/04/euronews.png",
+                            background:     "https://about.flipboard.com/wp-content/uploads/2013/10/euronews_blog.jpg"
                     ],
-                    image:          "http://static.ishaohuang.com/2012/09/cctv-logo.jpg",
-                    background:     "http://static.frontinc.com/uploads/2014/03/CCTV_02_1200x800.jpg"
-            ],
-            [
-                    name:           "NHK World Japan Live",
-                    description:    "International broadcasting service of NHK (Japan Broadcasting Corporation), Japan's public broadcaster",
-                    urls:           [
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_tv.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_tv.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_bg.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_bg.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_low.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_low.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_mid.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_mid.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/domestic/222467/live_high.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/global/222714/live_high.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/dwstv/222468/live.m3u8",
-                            "http://web-cache.stream.ne.jp/www11/nhkworld-tv/stv/225446/live.m3u8",
+                    [
+                            name:           "español",
+                            urls:           [
+                                    "http://fr-par-iphone-1.cdn.hexaglobe.net/streaming/euronews_ewns/ipad_es.m3u8"
+                            ],
+                            image:          "http://oklivetv.com/wp-content/uploads/2015/02/euronewses.jpg",
+                            background:     "https://about.flipboard.com/wp-content/uploads/2013/10/euronews_blog.jpg"
                     ],
-                    image:          "https://raw.githubusercontent.com/learningit/plugin.video.nhklive/master/icon.png",
-                    background:     "http://www.livenewsbox.com/wp-content/uploads/2015/01/NHK-World.jpg"
-            ],
-            /*[
-                    name:           "Antena 3",
-                    description:    "Spanish news",
-                    urls:           [
-                            "http://antena3-aos1-apple-live.adaptive.level3.net/apple/antena3/channel01/antena_3_hd_1548K_1280x720_main.m3u8"
+                    [
+                            name:           "français",
+                            urls:           [
+                                    "http://fr-par-iphone-1.cdn.hexaglobe.net/streaming/euronews_ewns/iphone_fr.m3u8"
+                            ],
+                            image:          "http://oklivetv.com/wp-content/uploads/2015/02/euronewsfr.jpg",
+                            background:     "https://about.flipboard.com/wp-content/uploads/2013/10/euronews_blog.jpg"
                     ],
-                    image:          "https://pbs.twimg.com/profile_images/562240130761515008/0-y3GBYM.jpeg",
-                    background:     "https://visualzink.files.wordpress.com/2011/03/02-postpack-naranja-logo-hd-0-00-03-24.jpg"
-            ],
-            [
-                    name:           "Nanjing News 南京新闻",
-                    description:    "CNTV China, World, Biz, Video, Live events",
-                    urls:           [
-                            "http://vdn.live.cntv.cn/api2/liveHtml5.do?channel=pa://cctv_p2p_hdnanjingnews"
+                    [
+                            name:           "hungary",
+                            urls:           [
+                                    "http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/iphone_hu.m3u8"
+                            ],
+                            image:          "http://irishsevensummits.com/wp-content/uploads/2015/05/EuronewsHungary.jpg",
+                            background:     "https://about.flipboard.com/wp-content/uploads/2013/10/euronews_blog.jpg"
                     ],
-                    image:          "http://static.ishaohuang.com/2012/09/cctv-logo.jpg",
-                    background:     "http://static.frontinc.com/uploads/2014/03/CCTV_02_1200x800.jpg"
-            ],
-            [
-                    name:           "Nantong Xinwen 南通新闻频道",
-                    description:    "CNTV China, World, Biz, Video, Live events",
-                    urls:           [
-                            "http://vdn.live.cntv.cn/api2/liveHtml5.do?channel=pa://cctv_p2p_hdnantongxinwen"
+                    [
+                            name:           "italiano",
+                            urls:           [
+                                    "http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/iphone_it.m3u8"
+                            ],
+                            image:          "http://oklivetv.com/wp-content/uploads/2015/02/euronewsit.jpg",
+                            background:     "https://about.flipboard.com/wp-content/uploads/2013/10/euronews_blog.jpg"
                     ],
-                    image:          "http://static.ishaohuang.com/2012/09/cctv-logo.jpg",
-                    background:     "http://static.frontinc.com/uploads/2014/03/CCTV_02_1200x800.jpg"
-            ],
-            [
-                    name:           "CCTV-9 纪录",
-                    description:    "CNTV China, World, Biz, Video, Live events",
-                    urls:           [
-                            "http://vdn.live.cntv.cn/api2/liveHtml5.do?channel=pa://cctv_p2p_hdcctvjilu"
+                    [
+                            name:           "português",
+                            urls:           [
+                                    "http://fr-par-iphone-1.cdn.hexaglobe.net/streaming/euronews_ewns/ipad_pt.m3u8"
+                            ],
+                            image:          "http://oklivetv.com/wp-content/uploads/2015/02/euronewspt1.jpg",
+                            background:     "https://about.flipboard.com/wp-content/uploads/2013/10/euronews_blog.jpg"
                     ],
-                    image:          "http://static.ishaohuang.com/2012/09/cctv-logo.jpg",
-                    background:     "http://static.frontinc.com/uploads/2014/03/CCTV_02_1200x800.jpg"
-            ],
-            [
-                    name:           "CNBC",
-                    description:    "Get latest business news on stock markets, financial & earnings",
-                    urls:           [
-                            "http://origin2.live.web.tv.streamprovider.net/streams/3bc166ba3776c04e987eb242710e75c0/index.m3u8"
+                    [
+                            name:           "türkçe",
+                            urls:           [
+                                    "http://fr-par-iphone-1.cdn.hexaglobe.net/streaming/euronews_ewns/iphone_tr.m3u8"
+                            ],
+                            image:          "http://oklivetv.com/wp-content/uploads/2015/02/euronewstr.jpg",
+                            background:     "https://about.flipboard.com/wp-content/uploads/2013/10/euronews_blog.jpg"
                     ],
-                    image:          "https://pbs.twimg.com/profile_images/700355164734156800/1k4mmfUm.png",
-                    background:     "http://tve-static-cnbc.nbcuni.com/prod/image/946/935/CNBC_HQ_3280x1560_HR_1280x725_554376771718.jpg"
-            ],
-            [
-                    name:           "i24news English",
-                    description:    "International news - 24 hours a day, 7 days a week",
-                    urls:           [
-                            "http://wpc.c1a9.edgecastcdn.net/hls-live/20C1A9/i24/ls_satlink/b_828.m3u8",
-                            "http://bcoveliveios-i.akamaihd.net/hls/live/215102/master_english/398/master.m3u8"
+                    [
+                            name:           "العربية",
+                            urls:           [
+                                    "http://fr-par-iphone-1.cdn.hexaglobe.net/streaming/euronews_ewns/iphone_ar.m3u8"
+                            ],
+                            image:          "http://oklivetv.com/wp-content/uploads/2015/02/euronewsar.jpg",
+                            background:     "https://about.flipboard.com/wp-content/uploads/2013/10/euronews_blog.jpg"
                     ],
-                    image:          "http://cdn.marketplaceimages.windowsphone.com/v8/images/d8e18462-25c0-40a0-9331-45caa99fca32",
-                    background:     "http://cdn.i24news.tv/upload/default/default-content.jpg"
-            ],
-            [
-                    name:           "i24news français",
-                    description:    "International news - 24 hours a day, 7 days a week",
-                    urls:           [
-                            "http://bcoveliveios-i.akamaihd.net/hls/live/215102/master_french/412/master.m3u8"
-                    ],
-                    image:          "http://cdn.marketplaceimages.windowsphone.com/v8/images/d8e18462-25c0-40a0-9331-45caa99fca32",
-                    background:     "http://cdn.i24news.tv/upload/default/default-content.jpg"
-            ],
-            [
-                    name:           "i24news العربية",
-                    description:    "International news - 24 hours a day, 7 days a week",
-                    urls:           [
-                            "http://bcoveliveios-i.akamaihd.net/hls/live/215102/master_arabic/391/master.m3u8"
-                    ],
-                    image:          "http://cdn.marketplaceimages.windowsphone.com/v8/images/d8e18462-25c0-40a0-9331-45caa99fca32",
-                    background:     "http://cdn.i24news.tv/upload/default/default-content.jpg"
-            ],*/
+            ]
     ]
+
+    def ParentPuppet mParent
+    def boolean mIsTopLevel
+    def String mName
+    def String mDescription
+    def mSection = []
+
+    WorldNewsLivePuppet() {
+        this(null, true, "World News Live", "Arirang, ABC News, CCTV/CNTV, Euronews, NHK Japan", null)
+    }
+
+    WorldNewsLivePuppet(ParentPuppet parent, boolean isTopLevel, String name, String description, def section) {
+        mParent = parent
+        mIsTopLevel = isTopLevel
+        mName = name
+        mDescription = description
+        mSection = section
+    }
 
     @Override
     PuppetIterator getChildren() {
-        PuppetIterator children = new WorldNewsLivePuppetIterator(this)
-        SOURCES.each { source ->
-            WorldNewsLiveSourcesPuppet sourcesPuppet = new WorldNewsLiveSourcesPuppet()
-            sourcesPuppet.setParent(this)
-            sourcesPuppet.setName(source.name)
-            sourcesPuppet.setShortDescription(source.description)
-            sourcesPuppet.setUrls(source.urls)
-            sourcesPuppet.setImageUrl(source.image)
-            sourcesPuppet.setBackgroundImageUrl(source.background)
-            children.add(sourcesPuppet)
+        PuppetIterator children = new WorldNewsLivePuppetIterator()
+        if (!mSection) {
+            SOURCES.each { k, section ->
+                if (k == "Featured") {
+                    section.each { source ->
+                        WorldNewsLiveSourcesPuppet sourcesPuppet = new WorldNewsLiveSourcesPuppet(
+                                this,
+                                source.urls,
+                                source.name,
+                                source.containsKey("description") ? source.description : null,
+                                source.image,
+                                source.background
+                        )
+                        children.add(sourcesPuppet)
+                    }
+                } else {
+                    children.add(new WorldNewsLivePuppet(this, true, k, null, section))
+                }
+            }
+        } else {
+            mSection.each { source ->
+                WorldNewsLiveSourcesPuppet sourcesPuppet = new WorldNewsLiveSourcesPuppet(
+                        this,
+                        source.urls as ArrayList<String>,
+                        source.name as String,
+                        source.containsKey("description") ? source.description as String : null,
+                        source.image as String,
+                        source.background as String
+                )
+                children.add(sourcesPuppet)
+            }
         }
 
         return children
@@ -161,12 +205,12 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
 
     @Override
     boolean isTopLevel() {
-        return true
+        return mIsTopLevel
     }
 
     @Override
     String getName() {
-        return "World News Live"
+        return mName
     }
 
     @Override
@@ -176,7 +220,7 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
 
     @Override
     String getShortDescription() {
-        return "Arirang, ABC News, CCTV/CNTV, NHK Japan"
+        return mDescription
     }
 
     @Override
@@ -206,7 +250,7 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
 
     @Override
     ParentPuppet getParent() {
-        return null
+        return mParent
     }
 
     @Override
@@ -237,16 +281,19 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
     @Override
     List<Map<String, String>> getLiveChannelsMetaData() {
         def list = []
-        SOURCES.each { source ->
-            // CCTV sources require a network call to determine actual sources so exclude
-            if (!source.description.startsWith("CNTV")) {
-                list << [
-                        name       : source.name,
-                        description: source.description,
-                        genres     : "NEWS",
-                        logo       : source.image,
-                        url        : source.urls[0]
-                ]
+        SOURCES.each { k, section ->
+            section.each { source ->
+                if (source.containsKey("description") && source.description.startsWith("CNTV")) {
+                    // CCTV sources require a network call to determine actual sources so exclude
+                } else {
+                    list << [
+                            name       : k == "Featured" ? source.name : k + ": " + source.name,
+                            description: source.containsKey("description") ? source.description : null,
+                            genres     : "NEWS",
+                            logo       : source.image,
+                            url        : source.urls[0]
+                    ]
+                }
             }
         }
         return list
@@ -259,7 +306,7 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
 
     @Override
     public String toString() {
-        return getName()
+        return mParent == null ? getName() : mParent.toString() + " < " + getName()
     }
 
     @Override
@@ -269,13 +316,8 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
 
     def class WorldNewsLivePuppetIterator extends PuppetIterator {
 
-        def ParentPuppet mParent
         def ArrayList<Puppet> mPuppets = new ArrayList<>()
         def int currentIndex = 0
-
-        public WorldNewsLivePuppetIterator(ParentPuppet parent) {
-            mParent = parent
-        }
 
         @Override
         boolean hasNext() {
@@ -294,20 +336,28 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
 
         @Override
         void remove() {
-
         }
     }
 
     def static class WorldNewsLiveSourcesPuppet implements SourcesPuppet {
 
         def ParentPuppet mParent
-        def String mName
-        def String mShortDescription
         def mUrls = []
+        def String mName
+        def String mDescription
         def String mImageUrl
         def String mBackgroundImageUrl
 
         def List<SourcesPuppet.SubtitleDescription> mSubtitles = new ArrayList<SourcesPuppet.SubtitleDescription>()
+
+        WorldNewsLiveSourcesPuppet(ParentPuppet parent, ArrayList<String> urls, String name, String description, String imageUrl, String backgroundImageUrl) {
+            mParent = parent
+            mUrls = urls
+            mName = name
+            mDescription = description
+            mImageUrl = imageUrl
+            mBackgroundImageUrl = backgroundImageUrl
+        }
 
         @Override
         String getPublicationDate() {
@@ -317,10 +367,6 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
         @Override
         long getDuration() {
             return -1
-        }
-
-        void setUrls(def urls) {
-            mUrls = urls
         }
 
         @Override
@@ -338,10 +384,6 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
             return mSubtitles
         }
 
-        void setName(String name) {
-            mName = name
-        }
-
         @Override
         String getName() {
             return mName
@@ -352,26 +394,14 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
             return null
         }
 
-        void setShortDescription(String shortDescription) {
-            mShortDescription = shortDescription
-        }
-
         @Override
         String getShortDescription() {
-            return mShortDescription
-        }
-
-        void setImageUrl(String imageUrl) {
-            mImageUrl = imageUrl
+            return mDescription
         }
 
         @Override
         String getImageUrl() {
             return mImageUrl
-        }
-
-        void setBackgroundImageUrl(String backgroundImageUrl) {
-            mBackgroundImageUrl = backgroundImageUrl
         }
 
         @Override
@@ -392,10 +422,6 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
         @Override
         int getShieldLevel() {
             return 0
-        }
-
-        void setParent(ParentPuppet parent) {
-            mParent = parent
         }
 
         @Override
@@ -422,7 +448,7 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
             boolean hasNext() {
                 if (mSources == null) {
                     mSources = new ArrayList<SourceDescription>()
-                    if (WorldNewsLiveSourcesPuppet.this.mShortDescription.startsWith("CNTV")) {
+                    if (WorldNewsLiveSourcesPuppet.this.mDescription != null && WorldNewsLiveSourcesPuppet.this.mDescription.startsWith("CNTV")) {
                         String content = new URL(WorldNewsLiveSourcesPuppet.this.mUrls[0].toString()).getText()
                         content = content.substring(content.indexOf("{"), content.lastIndexOf("}") + 1)
                         JSONObject json = new JSONObject(content)
@@ -459,7 +485,6 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
 
             @Override
             void remove() {
-
             }
         }
     }

@@ -136,7 +136,7 @@ public class HGTVPuppet implements InstallablePuppet {
 
     @Override
     int getSelectedBackgroundColor() {
-        return 0xFF11C2DC
+        return 0xFF664694
     }
 
     @Override

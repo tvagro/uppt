@@ -60,7 +60,7 @@ public class IciTouTvPuppet implements InstallablePuppet {
 
     @Override
     String getCategory() {
-        return mParent == null ? "Canada" : mParent.getName()
+        return mParent == null ? "Public Service" : mParent.getName()
     }
 
     @Override
