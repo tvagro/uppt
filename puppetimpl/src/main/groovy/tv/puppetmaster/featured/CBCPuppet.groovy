@@ -134,7 +134,7 @@ public class CBCPuppet implements InstallablePuppet {
 
     @Override
     public String getShortDescription() {
-        return null;
+        return "News, sports and television from Canada's national broadcaster";
     }
 
     @Override

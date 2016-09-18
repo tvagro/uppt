@@ -26,7 +26,7 @@ public class IciTouTvPuppet implements InstallablePuppet {
                 "ICI Tou.tv",
                 "Découvrez toute nos émissions d'un seul coup d'oeil et notre offre Extra. ICI Tou.tv est la plus importante webtélé de divertissement francophone au Canada.",
                 "/v1/toutvapiservice.svc/json/GetGenres",
-                "https://pbs.twimg.com/profile_images/448556282404818944/rM6tjmAB_400x400.png",
+                "https://pbs.twimg.com/profile_images/771736597670797312/7txcDom5.jpg",
                 "http://ici.tou.tv/Content/images/generic.jpg",
                 true
         )

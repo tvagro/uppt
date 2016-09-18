@@ -28,7 +28,7 @@ public class KhanAcademyPuppet implements InstallablePuppet {
                 null,
                 "http://www.khanacademy.org",
                 "Khan Academy",
-                "The Khan Academy is an organization on a mission. We're a not-for-profit with the goal of changing education for the better by providing a free world-class education to anyone anywhere. All of the site's resources are available to anyone. It doesn't matter if you are a student, teacher, home-schooler, principal, adult returning to the classroom after 20 years, or a friendly alien just trying to get a leg up in earthly biology. The Khan Academy's materials and resources are available to you completely free of charge.",
+                "The Khan Academy is an organization on a mission with the goal of changing education for the better by providing a free world-class education to anyone anywhere.",
                 "/api/v1/topic/root",
                 "https://raw.githubusercontent.com/jbeluch/xbmc-khan-academy/master/icon.png",
                 "http://corporate.comcast.com/images/khan-academy-logo.jpg",
