@@ -358,7 +358,7 @@ class RTEPlayerPuppet implements InstallablePuppet {
                 if (mSources == null) {
 
                     if (mIsUnavailableIn) {
-                        sleep(4000) // Delay post-teleportation allows VPN to settle prior to parse
+                        sleep(4000) // Delay post-teleportation allows connection to settle prior to parse
                     }
 
                     mSources = new ArrayList<>()
