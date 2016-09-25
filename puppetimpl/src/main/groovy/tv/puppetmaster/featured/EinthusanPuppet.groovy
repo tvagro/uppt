@@ -7,7 +7,7 @@ import tv.puppetmaster.data.i.Puppet.PuppetIterator
 
 class EinthusanPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     def ParentPuppet mParent
     def boolean mIsTopLevel
@@ -47,6 +47,11 @@ class EinthusanPuppet implements InstallablePuppet {
     @Override
     SearchesPuppet getSearchProvider() {
         return new EinthusanSearchesPuppet(this)
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
+        return null
     }
 
     @Override

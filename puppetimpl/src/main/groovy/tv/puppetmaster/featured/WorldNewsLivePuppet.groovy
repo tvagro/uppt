@@ -7,7 +7,7 @@ import tv.puppetmaster.data.i.SourcesPuppet.SourceDescription
 
 public class WorldNewsLivePuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     static final SOURCES = [
             "Featured": [
@@ -255,6 +255,11 @@ public class WorldNewsLivePuppet implements InstallablePuppet {
 
     @Override
     SearchesPuppet getSearchProvider() {
+        return null
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
         return null
     }
 

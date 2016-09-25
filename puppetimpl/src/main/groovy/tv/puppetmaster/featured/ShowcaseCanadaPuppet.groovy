@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 
 class ShowcaseCanadaPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     static final String CATEGORIES_URL = "http://common.farm1.smdg.ca/Forms/PlatformVideoFeed?platformUrl=http%3A//feed.theplatform.com/f/dtjsEC/9H6qyshBZU3E/categories%3Fpretty%3Dtrue%26byHasReleases%3Dtrue%26byCustomValue%3D%7Bplayertag%7D%7Bz/Showcase%20Video%20Centre%7D%26sort%3DfullTitle&callback="
     static final String CATEGORY_URL_TEMPLATE = 'http://feed.theplatform.com/f/dtjsEC/9H6qyshBZU3E?count=true&byCategoryIDs=%s&startIndex=1&endIndex=100&sort=pubDate|desc&callback='
@@ -57,6 +57,11 @@ class ShowcaseCanadaPuppet implements InstallablePuppet {
 
     @Override
     SearchesPuppet getSearchProvider() {
+        return null
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
         return null
     }
 

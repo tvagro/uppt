@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements
+import tv.puppetmaster.data.i.SettingsPuppet
 
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -23,7 +24,7 @@ import tv.puppetmaster.data.i.SourcesPuppet.SubtitleDescription;
 
 public class CBCPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4;
+    static final int VERSION_CODE = 5;
 
     transient def Document mDocument;
 
@@ -173,6 +174,11 @@ public class CBCPuppet implements InstallablePuppet {
             mSearchProvider = new ScrapeUrlSearchesPuppet(this, mBaseUrl, mSearchUrl, mSearchUrl, "Search: " + mName, mImageUrl, mBackgroundImageUrl, mRelatedUrl, mCategoryItemSelectors, mSourcesItemScrapeUrlFormat, mSourcesItemScrapeUrlPattern, mSourcesItemSelector, mSourcesItemScrapeUrlSelector, mSourcesNameSelector, mSourcesCategorySelector, mSourcesDescriptionSelector, mSourcesDurationSelector, mSourcesPublicationDateSelector, mSourcesIsLiveSelector, mSourcesImageSelector, mSourcesBackgroundImageSelector, mSourcesRelatedScrapeUrlSelector);
         }
         return mSearchProvider;
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
+        return null
     }
 
     @Override

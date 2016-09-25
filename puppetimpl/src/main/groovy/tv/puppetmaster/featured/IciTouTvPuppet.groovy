@@ -8,7 +8,7 @@ import tv.puppetmaster.data.i.SourcesPuppet.SourceDescription
 
 public class IciTouTvPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     def ParentPuppet mParent
     def String mBaseUrl
@@ -104,6 +104,11 @@ public class IciTouTvPuppet implements InstallablePuppet {
     }
 
     @Override
+    SettingsPuppet getSettingsProvider() {
+        return null
+    }
+
+    @Override
     int getFastlaneBackgroundColor() {
         return 0xFFE21A21
     }
@@ -115,7 +120,7 @@ public class IciTouTvPuppet implements InstallablePuppet {
 
     @Override
     int getSelectedBackgroundColor() {
-        return 0xFF00CCCC
+        return 0xFFE21A21
     }
 
     @Override

@@ -8,9 +8,8 @@ import tv.puppetmaster.data.i.Puppet.PuppetIterator
 
 class CBCPlusPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
-    static final boolean USE_PROXY = true
     static final String PROXY = "http://www.proxyforme.ml/browse.php?b=0&f=norefer&u="
 
     def ParentPuppet mParent
@@ -66,6 +65,11 @@ class CBCPlusPuppet implements InstallablePuppet {
     }
 
     @Override
+    SettingsPuppet getSettingsProvider() {
+        return null
+    }
+
+    @Override
     int getFastlaneBackgroundColor() {
         return 0xFF000000
     }
@@ -94,17 +98,10 @@ class CBCPlusPuppet implements InstallablePuppet {
     PuppetIterator getChildren() {
         PuppetIterator children = new CBCPlusPuppetIterator()
         def String page
-        if (USE_PROXY) {
-            println PROXY + URLEncoder.encode(mUrl, "UTF-8")
-            println new URL(PROXY + URLEncoder.encode(mUrl, "UTF-8")).getText(requestProperties: ['User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'])
+        if (PROXY) {
             page = new URL(PROXY + URLEncoder.encode(mUrl, "UTF-8")).getText(requestProperties: [
                     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                    'Accept-Encoding': 'gzip, deflate, sdch',
-                    'Accept-Language': 'en-US,en;q=0.8',
-                    'Connection': 'keep-alive',
-                    'Cookie': 's=ets6enlsnn3nupt6q9erjomaa1; c[clearleap.com][/cloffice/][JSESSIONID]=A0E7A502F74B1B8E1E2004206D810E96.ip-10-93-91-239',
-                    'Upgrade-Insecure-Requests': '1',
+                    'Referer': PROXY,
             ])
         } else {
             page = new URL(mUrl).getText()
@@ -125,7 +122,7 @@ class CBCPlusPuppet implements InstallablePuppet {
                         this,
                         name,
                         it.select("description").first().text(),
-                        it.select("media_credit[role='releaseDate']").first().text(),
+                        it.select("media_credit[role='releaseDate']") ? it.select("media_credit[role='releaseDate']").first().text() : null,
                         1000 * Long.parseLong(it.select("media_content[medium='video']").first().attr("duration")),
                         it.select("media_thumbnail").first().attr("url"),
                         it.select("media_thumbnail").last().attr("url"),
@@ -141,7 +138,7 @@ class CBCPlusPuppet implements InstallablePuppet {
                         it.select("media_thumbnail") ? it.select("media_thumbnail").last().attr("url") : null,
                         url
                 )
-                if (name == "Featured") {
+                if (it.select("clearleap_analyticslabel").first().text() in ["Featured", "Carousel"]) {
                     for (Puppet c : items.getChildren()) {
                         children.add(c)
                     }
@@ -277,7 +274,7 @@ class CBCPlusPuppet implements InstallablePuppet {
 
         @Override
         String getPublicationDate() {
-            return mPublicationDate.split("T")[0]
+            return mPublicationDate != null ? mPublicationDate.split("T")[0] : null
         }
 
         @Override

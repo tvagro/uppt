@@ -10,7 +10,7 @@ import java.util.regex.Matcher
 
 class HotstarPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     static final MAIN_CATEGORIES = [
             [
@@ -79,6 +79,11 @@ class HotstarPuppet implements InstallablePuppet {
     @Override
     SearchesPuppet getSearchProvider() {
         return new HotstarSearchesPuppet(this)
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
+        return null
     }
 
     @Override

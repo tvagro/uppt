@@ -11,7 +11,7 @@ import java.util.regex.Matcher
 
 public class CBSNPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     @Override
     PuppetIterator getChildren() {
@@ -103,6 +103,11 @@ public class CBSNPuppet implements InstallablePuppet {
 
     @Override
     SearchesPuppet getSearchProvider() {
+        return null
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
         return null
     }
 

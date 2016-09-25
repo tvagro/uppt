@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 public class PopcornFlixPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     def ParentPuppet mParent
     def String mUrl
@@ -141,6 +141,11 @@ public class PopcornFlixPuppet implements InstallablePuppet {
     @Override
     SearchesPuppet getSearchProvider() {
         return new PopcornFlixSearchesPuppet(this)
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
+        return null
     }
 
     @Override

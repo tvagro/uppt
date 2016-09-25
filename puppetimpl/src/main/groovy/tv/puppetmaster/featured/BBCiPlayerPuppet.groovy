@@ -11,7 +11,7 @@ import java.util.regex.Matcher
 
 class BBCiPlayerPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     static final CHANNELS = [
             [
@@ -303,6 +303,11 @@ class BBCiPlayerPuppet implements InstallablePuppet {
     @Override
     SearchesPuppet getSearchProvider() {
         return new BBCiPlayerSearchesPuppet(this)
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
+        return null
     }
 
     @Override

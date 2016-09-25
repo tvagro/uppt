@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 def class TVOPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     @Override
     int getVersionCode() {
@@ -20,6 +20,11 @@ def class TVOPuppet implements InstallablePuppet {
 
     @Override
     SearchesPuppet getSearchProvider() {
+        return null
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
         return null
     }
 

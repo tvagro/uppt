@@ -10,7 +10,7 @@ import java.util.regex.Matcher
 
 public class TubiTVPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     def ParentPuppet mParent
     def String mUrl
@@ -112,6 +112,11 @@ public class TubiTVPuppet implements InstallablePuppet {
 
     @Override
     SearchesPuppet getSearchProvider() {
+        return null
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
         return null
     }
 
@@ -308,6 +313,9 @@ public class TubiTVPuppet implements InstallablePuppet {
             mName = video.getString("n")
             mShortDescription = video.getString("d")
             mImageUrl = video.getString("pp")
+            if (mImageUrl.startsWith("//")) {
+                mImageUrl = "http:" + mImageUrl
+            }
         }
 
         @Override
@@ -407,6 +415,9 @@ public class TubiTVPuppet implements InstallablePuppet {
                     if (matcher.find()) {
                         JSONObject json = new JSONObject("{" + matcher.group(1) + "}").getJSONObject("video").getJSONObject("data")
                         mSource.url = json.getString("mh")
+                        if (mSource.url.startsWith("//")) {
+                            mSource.url = "http:" + mSource.url
+                        }
 
                         JSONArray captions = json.getJSONArray("sb")
                         for (int i = 0; i < captions.length(); i++) {
@@ -415,6 +426,9 @@ public class TubiTVPuppet implements InstallablePuppet {
                             SourcesPuppet.SubtitleDescription subs = new SourcesPuppet.SubtitleDescription()
 
                             subs.url = sb.getString("u")
+                            if (subs.url.startsWith("//")) {
+                                subs.url = "http:" + subs.url
+                            }
                             subs.locale = sb.getString("l")
 
                             TubiTVSourcesPuppet.this.mSubtitles.add(subs)

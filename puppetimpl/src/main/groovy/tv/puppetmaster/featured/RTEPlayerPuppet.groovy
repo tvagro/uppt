@@ -1,9 +1,9 @@
-package tv.puppetmaster.extra
+package tv.puppetmaster.featured
 
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.parser.Parser
+import org.jsoup.nodes.Element
 import tv.puppetmaster.data.i.*
 import tv.puppetmaster.data.i.Puppet.PuppetIterator
 
@@ -11,9 +11,45 @@ import java.util.regex.Matcher
 
 class RTEPlayerPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
-    def static final String LIVE_URL_TEMPLATE = "http://feeds.rasset.ie/livelistings/playlist/?channelid="
+    static final CHANNELS = [
+            [
+                    name:           "RTÉ One",
+                    description:    "Home grown entertainment, drama and factual programming including family favourites",
+                    genres:         "ENTERTAINMENT",
+                    urls:           [
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte1/rte1-720.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte1/rte1-576.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte1/rte1-360.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte1/rte1-270.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte1/rte1-180.m3u8",
+                    ],
+            ],
+            [
+                    name:           "RTÉ 2",
+                    description:    "Irish TV Television, Programmes, Drama, Factual, Lifestyle, Entertainment, Young People, News, Arts, Religious, Sport",
+                    genres:         "ENTERTAINMENT",
+                    urls:           [
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte2/rte2-720.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte2/rte2-576.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte2/rte2-360.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte2/rte2-270.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/rte2/rte2-180.m3u8",
+                    ],
+            ],
+            [
+                    name:           "RTÉ News Now",
+                    description:    "The latest Irish and International news from RTÉ. Followed by Weather.",
+                    genres:         "NEWS",
+                    urls:           [
+                            "http://cdn.rasset.ie/hls-live/_definst_/newsnow/newsnow-576.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/newsnow/newsnow-360.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/newsnow/newsnow-270.m3u8",
+                            "http://cdn.rasset.ie/hls-live/_definst_/newsnow/newsnow-180.m3u8",
+                    ],
+            ],
+    ]
 
     def ParentPuppet mParent
     def boolean mIsTopLevel
@@ -56,6 +92,11 @@ class RTEPlayerPuppet implements InstallablePuppet {
     }
 
     @Override
+    SettingsPuppet getSettingsProvider() {
+        return null
+    }
+
+    @Override
     int getFastlaneBackgroundColor() {
         return 0xFF000000
     }
@@ -77,45 +118,70 @@ class RTEPlayerPuppet implements InstallablePuppet {
 
     @Override
     List<Map<String, String>> getLiveChannelsMetaData() {
-        return null
+        def list = []
+        CHANNELS.each { source ->
+            list << [
+                    name       : source.name,
+                    description: source.description,
+                    genres     : source.genres,
+                    logo       : getImageUrl(),
+                    url        : source.urls[0]
+            ]
+        }
+        return list
     }
 
     @Override
     PuppetIterator getChildren() {
-        PuppetIterator children = new CBCPlusPuppetIterator()
+        PuppetIterator children = new RTEPlayerPuppetIterator()
 
         def Document document = Jsoup.connect(mUrl)
                 .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                 .get()
 
-        /*if (mParent == null) {
-            ["7"].each {
+        if (mParent == null) {
+            CHANNELS.each {
                 children.add(new RTEPlayerLiveSourcesPuppet(
                         this,
-                        "Live " + it,
-                        LIVE_URL_TEMPLATE + it
+                        it.name,
+                        it.description,
+                        it.urls as String[]
                 ))
             }
-        }*/
+        }
 
-        document.select(".slide-homepage a,sidebar-list-most-popular a,.thumbnail-programme-link,.a-to-z a,.search-result a").each {
-            if (it.attr("href").contains("/show/")) {
+        document.select(".slide-homepage a,sidebar-list-most-popular a,.thumbnail-programme-link,.a-to-z a,.search-result").each {
+            String title = it.text()
+            if (it.select(".thumbnail-title,.most-popular-title,.search-programme-title")) {
+                title = it.select(".thumbnail-title,.most-popular-title,.search-programme-title").first().text()
+            }
+            String description = null
+            if (it.select(".thumbnail-description,.most-popular-description,.search-programme-description")) {
+                description = it.select(".thumbnail-description,.most-popular-description,.search-programme-description").first().text()
+            }
+            String publicationDate = null
+            if (it.select(".thumbnail-date,.most-popular-views,.search-programme-episodes")) {
+                publicationDate = it.select(".thumbnail-date,.most-popular-views,.search-programme-episodes").first().text()
+            }
+            Element a = it.hasAttr("href") ? it : it.select("a").first()
+            if ((a.attr("href").contains("/show/") && publicationDate == null) || (a.attr("href").contains("/show/") && !publicationDate.contains("episodes available"))) {
                 children.add(new RTEPlayerSourcesPuppet(
                         this,
-                        it.text(),
-                        null,
+                        title,
+                        description,
+                        publicationDate,
                         it.select("img") ? it.select("img").first().absUrl("src") : null,
-                        it.absUrl("href")
+                        a.absUrl("href")
                 ))
-            } else if (!it.attr("href").contains("/live/")) {
+            } else if (!a.attr("href").contains("/live/")) {
                 children.add(new RTEPlayerPuppet(
                         this,
                         false,
-                        it.text(),
-                        null,
+                        title,
+                        publicationDate,
                         it.select("img") ? it.select("img").first().absUrl("src") : null,
                         null,
-                        it.absUrl("href")
+                        a.absUrl("href")
                 ))
             }
         }
@@ -197,7 +263,7 @@ class RTEPlayerPuppet implements InstallablePuppet {
         return mParent == null ? getName() : mParent.toString() + " < " + getName()
     }
 
-    def static class CBCPlusPuppetIterator extends PuppetIterator {
+    def static class RTEPlayerPuppetIterator extends PuppetIterator {
 
         def ArrayList<Puppet> mPuppets = new ArrayList<>()
         def int currentIndex = 0
@@ -224,7 +290,7 @@ class RTEPlayerPuppet implements InstallablePuppet {
 
     def static class RTEPlayerSearchesPuppet extends RTEPlayerPuppet implements SearchesPuppet {
 
-        static final String URL_TEMPLATE = "http://www.rte.ie/player/ie/search/&q="
+        static final String URL_TEMPLATE = "http://www.rte.ie/player/ie/search/?q="
 
         public RTEPlayerSearchesPuppet(ParentPuppet parent) {
             super(parent, false, "Search", "Search RTÉ", null, null, URL_TEMPLATE)
@@ -243,14 +309,16 @@ class RTEPlayerPuppet implements InstallablePuppet {
         def ParentPuppet mParent
         def String mName
         def String mDescription
+        def String mPublicationDate
         def String mImageUrl
         def String mId
         def boolean mIsUnavailableIn = false
 
-        RTEPlayerSourcesPuppet(ParentPuppet parent, String name, String description, String imageUrl, String url) {
+        RTEPlayerSourcesPuppet(ParentPuppet parent, String name, String description, String publicationDate, String imageUrl, String url) {
             mParent = parent
             mName = name
             mDescription = description
+            mPublicationDate = publicationDate
             mImageUrl = imageUrl
 
             if (url.endsWith("/")) {
@@ -262,7 +330,7 @@ class RTEPlayerPuppet implements InstallablePuppet {
 
         @Override
         String getPublicationDate() {
-            return null
+            return mPublicationDate
         }
 
         @Override
@@ -420,12 +488,14 @@ class RTEPlayerPuppet implements InstallablePuppet {
 
         def ParentPuppet mParent
         def String mName
-        def String mUrl
+        def String mDescription
+        def String[] mUrls
 
-        RTEPlayerLiveSourcesPuppet(ParentPuppet parent, String name, String url) {
+        RTEPlayerLiveSourcesPuppet(ParentPuppet parent, String name, String description, String[] urls) {
             mParent = parent
             mName = name
-            mUrl = url
+            mDescription = description
+            mUrls = urls
         }
 
         @Override
@@ -465,7 +535,7 @@ class RTEPlayerPuppet implements InstallablePuppet {
 
         @Override
         String getShortDescription() {
-            return null
+            return mDescription
         }
 
         @Override
@@ -510,33 +580,27 @@ class RTEPlayerPuppet implements InstallablePuppet {
 
         def class RTEPlayerLiveSourceIterator implements SourcesPuppet.SourceIterator {
 
-            def SourcesPuppet.SourceDescription mSource = null
+            def ArrayList<SourcesPuppet.SourceDescription> mSources = null
+            def int mCurrentIndex = 0
 
             @Override
             boolean hasNext() {
-                if (mSource == null) {
+                if (mSources == null) {
 
-                    def String page = new URL(mUrl).getText(requestProperties: [
-                            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
-                    ])
-                            .replace("<media:", "<media_")
-                            .replace("</media:", "</media_")
+                    mSources = new ArrayList<>()
 
-                    mSource = new SourcesPuppet.SourceDescription()
-                    mSource.url = Jsoup.parse(page, "", Parser.xmlParser())
-                            .select("feed").first()
-                            .select("entry").first()
-                            .select("media_group").first()
-                            .select("media_content").first()
-
-                    return true
+                    mUrls.each {
+                        SourcesPuppet.SourceDescription source = new SourcesPuppet.SourceDescription()
+                        source.url = it
+                        mSources.add(source)
+                    }
                 }
-                return false
+                return mCurrentIndex < mSources.size()
             }
 
             @Override
             SourcesPuppet.SourceDescription next() {
-                return mSource
+                return mSources.get(mCurrentIndex++)
             }
 
             @Override

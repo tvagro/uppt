@@ -10,7 +10,7 @@ import java.util.regex.Matcher
 
 public class PBSKidsPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     def ParentPuppet mParent
     def String mUrl
@@ -158,6 +158,11 @@ public class PBSKidsPuppet implements InstallablePuppet {
 
     @Override
     SearchesPuppet getSearchProvider() {
+        return null
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
         return null
     }
 

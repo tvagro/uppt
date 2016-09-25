@@ -8,7 +8,7 @@ import tv.puppetmaster.data.i.*
 
 class NationalGeographicPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     static final String BASE_URL = "http://video.nationalgeographic.com"
 
@@ -59,6 +59,11 @@ class NationalGeographicPuppet implements InstallablePuppet {
     @Override
     SearchesPuppet getSearchProvider() {
         return new NationalGeographicSearchesPuppet(this)
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
+        return null
     }
 
     @Override

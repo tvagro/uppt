@@ -10,6 +10,7 @@ public interface InstallablePuppet extends ParentPuppet {
      * Live channels          >= 2
      * Branding               >= 2
      * Region handling        >= 4
+     * Settings               >= 5
      */
     int getVersionCode();
 
@@ -17,6 +18,11 @@ public interface InstallablePuppet extends ParentPuppet {
      * If the puppet provides the ability to search, this provider is passed the input
      */
     SearchesPuppet getSearchProvider();
+
+    /*
+     * Exposes settings that may be optional or required to retrieve content
+     */
+    SettingsPuppet getSettingsProvider();
 
     /*
      * Custom branding for this puppet, specifies the fastlane background color

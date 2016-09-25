@@ -8,12 +8,13 @@ import tv.puppetmaster.data.i.ParentPuppet
 import tv.puppetmaster.data.i.Puppet
 import tv.puppetmaster.data.i.Puppet.PuppetIterator
 import tv.puppetmaster.data.i.SearchesPuppet
+import tv.puppetmaster.data.i.SettingsPuppet
 import tv.puppetmaster.data.i.SourcesPuppet
 import tv.puppetmaster.data.i.SourcesPuppet.SourceDescription
 
 public class RTPuppet implements InstallablePuppet {
 
-    static final int VERSION_CODE = 4
+    static final int VERSION_CODE = 5
 
     static final LIVE_SOURCES = [
             [
@@ -129,6 +130,11 @@ public class RTPuppet implements InstallablePuppet {
 
     @Override
     SearchesPuppet getSearchProvider() {
+        return null
+    }
+
+    @Override
+    SettingsPuppet getSettingsProvider() {
         return null
     }
 
