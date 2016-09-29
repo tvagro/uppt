@@ -4,6 +4,7 @@ apply plugin: 'groovy'
 def ANDROID_SDK_HOME = System.properties['user.home'] + '/Library/Android/sdk/build-tools/24.0.0'
 
 task jarEach << {
+    delete fileTree(dir: 'build/libs/' , include: '*.jar')
     def paths = []
     fileTree("src").visit { FileVisitDetails details ->
         if (details.file.path.contains("/puppetimpl/src/main/groovy/") && details.file.path.endsWith(".groovy")) {

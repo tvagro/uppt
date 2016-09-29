@@ -1,10 +1,12 @@
-package tv.puppetmaster.extra
+package tv.puppetmaster.featured
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.parser.Parser
 import tv.puppetmaster.data.i.*
 import tv.puppetmaster.data.i.Puppet.PuppetIterator
+
+import java.util.regex.Matcher
 
 class CBCPlusPuppet implements InstallablePuppet {
 
@@ -126,7 +128,8 @@ class CBCPlusPuppet implements InstallablePuppet {
                         1000 * Long.parseLong(it.select("media_content[medium='video']").first().attr("duration")),
                         it.select("media_thumbnail").first().attr("url"),
                         it.select("media_thumbnail").last().attr("url"),
-                        it.select("media_content[medium='video']").first().attr("url")
+                        it.select("media_content[medium='video']").first().attr("url"),
+                        it.select("media_thumbnail").collect { it.attr("url") } as String[]
                 ))
             } else if (mParent != null || !(itemType in ["SEARCH", "IDENTITY"])) {
                 ParentPuppet items = new CBCPlusPuppet(
@@ -260,8 +263,9 @@ class CBCPlusPuppet implements InstallablePuppet {
         def String mImageUrl
         def String mBackgroundImageUrl
         def String mUrl
+        def String[] mAllImages
 
-        CBCPlusSourcesPuppet(ParentPuppet parent, String name, String description, String publicationDate, long duration, String imageUrl, String backgroundImageUrl, String url) {
+        CBCPlusSourcesPuppet(ParentPuppet parent, String name, String description, String publicationDate, long duration, String imageUrl, String backgroundImageUrl, String url, String[] allImages) {
             mParent = parent
             mName = name
             mDescription = description
@@ -269,7 +273,8 @@ class CBCPlusPuppet implements InstallablePuppet {
             mDuration = duration
             mImageUrl = imageUrl
             mBackgroundImageUrl = backgroundImageUrl
-            mUrl = url
+            mUrl = url // TODO: Figure out how to make use of this
+            mAllImages = allImages
         }
 
         @Override
@@ -354,21 +359,68 @@ class CBCPlusPuppet implements InstallablePuppet {
 
         def class CBCPlusSourceIterator implements SourcesPuppet.SourceIterator {
 
-            def SourcesPuppet.SourceDescription mSource = null
+            def ArrayList<SourcesPuppet.SourceDescription> mSources = null
+            def int currentIndex = 0
 
             @Override
             boolean hasNext() {
-                if (mSource == null) {
-                    mSource = new SourcesPuppet.SourceDescription()
-                    mSource.url = mUrl
-                    return true
+                if (mSources == null) {
+                    mSources = new ArrayList<>()
+
+                    try {
+                        def page = new URL(mUrl).getText(requestProperties: [
+                                'X-Clearleap-DeviceId': '6178e633-5b20-4680-aef4-9081d60ff0d4',
+                                'X-Clearleap-DeviceToken': 'NElqNnJUSDhtczNHK25rRzF6a0FMMDQzbVpIRFowUnlGcDJKcTNqK0hzOD0='
+                        ])
+                        Matcher matcher = page =~ /<url>(.*)<\/url>/
+                        if (matcher.find()) {
+                            def SourcesPuppet.SourceDescription source = new SourcesPuppet.SourceDescription()
+                            source.url = matcher.group(1)
+                            mSources.add(source)
+                        } else {
+                            throw new Exception()
+                        }
+                    } catch (Exception ex) {
+                        // Fallback try to guesstimate based on image resource ids
+                        String streamTemplate = null
+
+                        def List<Long> numbers = []
+                        mAllImages.each {
+                            if (it.matches(".*-\\d+.jpg")) {
+                                numbers << Long.parseLong(it.substring(it.lastIndexOf("-") + 1, it.lastIndexOf(".")))
+                                if (streamTemplate == null) {
+                                    streamTemplate = it.substring(0, it.lastIndexOf("-")).replace("http://i", "http://v")
+                                }
+                            }
+                        }
+                        numbers.sort().reverse(true)
+
+                        def List<Long> bucket = []
+                        numbers.each { num ->
+                            (1..5).each {
+                                // Try five resource ids around each known image resource
+                                if (!((num - it) in numbers || (num - it) in bucket)) {
+                                    bucket << num - it
+                                }
+                                if (!((num + it) in numbers || (num + it) in bucket)) {
+                                    bucket << num + it
+                                }
+                            }
+                        }
+                        for (long num : bucket) {
+                            // Really clunky, playing a game of guess the url between the image resources, mostly works but not always
+                            def SourcesPuppet.SourceDescription source = new SourcesPuppet.SourceDescription()
+                            source.url = streamTemplate + "-" + num + "/" + streamTemplate.substring(streamTemplate.lastIndexOf("/") + 1) + "-" + num + "__desktop.m3u8"
+                            mSources.add(source)
+                        }
+                    }
                 }
-                return false
+                return currentIndex < mSources.size()
             }
 
             @Override
             SourcesPuppet.SourceDescription next() {
-                return mSource
+                return mSources.get(currentIndex++)
             }
 
             @Override

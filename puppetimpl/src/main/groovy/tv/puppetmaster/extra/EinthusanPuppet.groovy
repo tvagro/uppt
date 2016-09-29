@@ -1,7 +1,5 @@
-package tv.puppetmaster.featured
+package tv.puppetmaster.extra
 
-import org.jsoup.Jsoup
-import org.jsoup.parser.Parser
 import tv.puppetmaster.data.i.*
 import tv.puppetmaster.data.i.Puppet.PuppetIterator
 
