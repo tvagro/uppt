@@ -32,18 +32,6 @@ class CBCPlusPuppet implements InstallablePuppet {
                 null,
                 "https://api-cbc.cloud.clearleap.com/cloffice/client/web/browse/"
         )
-        /*def CookieManager cookieManager = (CookieManager) CookieHandler.getDefault()
-        if (!cookieManager) {
-            cookieManager = new CookieManager();
-            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
-            CookieHandler.setDefault(cookieManager)
-        }
-        def CookieStore cookieStore = cookieManager.getCookieStore()
-        def Connection.Response res = Jsoup.connect("http://watch.cbc.ca/")
-                .userAgent("Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36")
-                .execute()
-        cookieStore.add(new URI(mUrl), HttpCookie.parse("JSESSION=" + res.cookies().get("JSESSION")).get(0))
-        def String session = cookieStore.get(new URI(mUrl)).get(0)*/
     }
 
     CBCPlusPuppet(ParentPuppet parent, boolean isTopLevel, String name, String description, String imageUrl, String backgroundImageUrl, String url) {
