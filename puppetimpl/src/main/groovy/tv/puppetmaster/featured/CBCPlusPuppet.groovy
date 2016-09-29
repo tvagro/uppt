@@ -273,7 +273,7 @@ class CBCPlusPuppet implements InstallablePuppet {
             mDuration = duration
             mImageUrl = imageUrl
             mBackgroundImageUrl = backgroundImageUrl
-            mUrl = url // TODO: Figure out how to make use of this
+            mUrl = url
             mAllImages = allImages
         }
 
